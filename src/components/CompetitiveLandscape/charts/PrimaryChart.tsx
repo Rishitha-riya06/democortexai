@@ -71,11 +71,13 @@ export interface PrimaryChartProps {
 }
 
 export function PrimaryChart({ rows, metricLabel, companyLabels, companyColors }: PrimaryChartProps) {
+  const sortedRows = [...rows].sort((a, b) => b.pct - a.pct);
+
   return (
     <div className="primary-chart">
       <div className="chart-metric-label">{metricLabel}</div>
       <div className="bar-rows">
-        {rows.map((row) => (
+        {sortedRows.map((row) => (
           <BarRow
             key={row.key}
             row={row}
@@ -85,12 +87,12 @@ export function PrimaryChart({ rows, metricLabel, companyLabels, companyColors }
           />
         ))}
       </div>
-      {rows[0]?.sub && (
+      {sortedRows[0]?.sub && (
         <div className="sub-metrics-grid">
-          {rows[0].sub.map((s) => (
+          {sortedRows[0].sub.map((s) => (
             <div key={s.label} className="sub-metric-col">
               <p className="sub-metric-label">{s.label}</p>
-              {rows.map((row) => (
+              {sortedRows.map((row) => (
                 <div key={row.key} className="sub-metric-cell" style={{ color: companyColors[row.key] }}>
                   <span className="sub-dot" style={{ backgroundColor: companyColors[row.key] }} />
                   <span className="sub-company">{companyLabels[row.key]}</span>
