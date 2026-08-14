@@ -1,4 +1,4 @@
-import { Fragment, ReactNode, useEffect, useState } from 'react';
+import { Fragment, ReactNode, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   ArrowLeft,
@@ -16,9 +16,32 @@ import {
   Sparkles,
   X,
 } from 'lucide-react';
+import {
+  CompanyKey,
+  SeriesRow,
+  PaidMatrixRow,
+  CompetitiveRankingChart,
+  CompetitiveSnapshot,
+  LinkedInPresence,
+  InstagramPresence,
+  WebsiteReach,
+  SearchPresence,
+  VideoPresence,
+  PaidPresence,
+  DigitalPresenceAcrossChannels,
+  CompetitiveGapsSummary,
+  DataTransparency,
+} from './components/CompetitiveLandscape';
 
 type Screen = 'landing' | 'intelligence' | 'competitors';
 type Company = 'NVIDIA' | 'OpenAI' | 'Microsoft' | 'Salesforce' | 'Zoho';
+
+type ChatMessage = {
+  id: string;
+  role: 'user' | 'assistant';
+  content: string;
+  timestamp?: string;
+};
 
 type HistoryItem = {
   name: Company;
@@ -47,8 +70,6 @@ const researchSteps = [
   'Building competitive intelligence',
 ];
 
-type CompanyKey = 'target' | 'compA' | 'compB' | 'compC';
-
 const companyColors: Record<CompanyKey, string> = {
   target: '#6d4aff',
   compA: '#3b82f6',
@@ -62,8 +83,6 @@ const companyLabels: Record<CompanyKey, string> = {
   compB: 'Intel',
   compC: 'Qualcomm',
 };
-
-type SeriesRow = { key: CompanyKey; raw: string; pct: number; sub?: { label: string; value: string }[] };
 
 const snapshotData: { category: string; rows: SeriesRow[] }[] = [
   {
@@ -150,7 +169,7 @@ const paidMatrix: { key: CompanyKey; meta: 'detected' | 'none' | 'unknown'; goog
   { key: 'compC', meta: 'detected', google: 'none', linkedin: 'detected', video: 'detected' },
 ];
 
-const crossPlatformData: { channel: string; rows: SeriesRow[] }[] = snapshotData;
+const crossPlatformData = snapshotData;
 
 const sectionInsights: Record<string, string> = {
   snapshot: 'AMD leads NVIDIA by 29% in LinkedIn followers, but NVIDIA dominates website reach by 51% over Intel.',
@@ -165,6 +184,36 @@ const sectionInsights: Record<string, string> = {
 
 const sourceLabels = ['Company website', 'Press release', 'News'];
 
+function generateAIResponse(company: Company, question: string): string {
+  const q = question.toLowerCase();
+  if (q.includes('expand') || q.includes('growth') || q.includes('strategy') || q.includes('why are they expanding')) {
+    return `CORTEX intelligence indicates that ${company} is expanding rapidly by turning its core technological depth into a comprehensive enterprise platform relationship. By bundling multi-product capabilities and establishing strong partner distribution channels, ${company} is scaling revenue per customer while locking in platform stickiness.`;
+  }
+  if (q.includes('competitor') || q.includes('rival') || q.includes('who are') || q.includes('strongest competitor')) {
+    if (company === 'NVIDIA') {
+      return `Primary direct competitors for NVIDIA include AMD (accelerating in AI inference and training accelerators), Intel (enterprise server and silicon), and Qualcomm (edge computing and mobile chips). In hyperscale silicon, custom chips like Google TPU, AWS Inferentia, and Meta MTIA also present long-term competitive dynamics.`;
+    } else if (company === 'OpenAI') {
+      return `Primary direct competitors for OpenAI include Google / DeepMind (Gemini ecosystem), Anthropic (Claude platform), and Microsoft / Azure AI (both a key partner and sovereign infrastructure provider), alongside open-weight initiatives like Meta Llama.`;
+    } else if (company === 'Microsoft') {
+      return `Primary competitors across business lines include Amazon AWS and Google Cloud in infrastructure, Salesforce in enterprise CRM, and Apple and Google in consumer platforms and developer ecosystems.`;
+    } else if (company === 'Salesforce') {
+      return `Primary direct competitors include Microsoft Dynamics 365, HubSpot, Oracle CX Cloud, and SAP CRM, competing aggressively on AI agent workflows and unified customer data platforms.`;
+    } else {
+      return `Primary direct competitors for ${company} include Freshworks, HubSpot, Salesforce, and Microsoft 365, focusing on cost-effective, all-in-one software suites for SMBs and mid-market enterprises.`;
+    }
+  }
+  if (q.includes('signal') || q.includes('what signal') || q.includes('transformation') || q.includes('detected')) {
+    return `Key transformation signals detected for ${company}: (1) Accelerated deployment of AI-powered workflows across the core product line; (2) Strategic expansion of ecosystem cloud marketplace distribution; (3) Increasing focus on zero-trust enterprise security and developer tooling to protect the core moat.`;
+  }
+  if (q.includes('challenge') || q.includes('risk') || q.includes('vulnerabilit') || q.includes('weakness')) {
+    return `Identified vulnerabilities for ${company} include managing customer acquisition cost at scale, navigating evolving international compliance standards, and maintaining high engineering velocity amid aggressive competitor feature matching.`;
+  }
+  if (q.includes('founded') || q.includes('hq') || q.includes('employee') || q.includes('fact')) {
+    return `${company} maintains a high confidence intelligence profile with verified presence across enterprise software, cloud services, and international hubs. Source aggregation confirms strong market positioning.`;
+  }
+  return `Based on accumulated primary source intelligence for ${company}, ${company} is leveraging sustained R&D investments and high user affinity to defend its core market position while driving systematic cross-sell adoption across enterprise buyers.`;
+}
+
 function App() {
   const [screen, setScreen] = useState<Screen>('landing');
   const [company, setCompany] = useState<Company>('NVIDIA');
@@ -172,7 +221,7 @@ function App() {
   const [isResearching, setIsResearching] = useState(false);
   const [researchStep, setResearchStep] = useState(0);
   const [reportReady, setReportReady] = useState(false);
-  const [chatMessages, setChatMessages] = useState<string[]>([]);
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const [chatInput, setChatInput] = useState('');
 
   useEffect(() => {
@@ -210,6 +259,7 @@ function App() {
     setCompany(item.name);
     setReportReady(true);
     setIsResearching(false);
+    setChatMessages([]);
     setScreen('intelligence');
   };
 
@@ -221,10 +271,27 @@ function App() {
     setScreen('intelligence');
   };
 
-  const askQuestion = () => {
-    const question = chatInput.trim();
+  const askQuestion = (overridePrompt?: string) => {
+    const question = (overridePrompt ?? chatInput).trim();
     if (!question) return;
-    setChatMessages((messages) => [...messages, question]);
+
+    const timeString = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+    const userMsg: ChatMessage = {
+      id: `user-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+      role: 'user',
+      content: question,
+      timestamp: timeString,
+    };
+
+    const assistantMsg: ChatMessage = {
+      id: `assistant-${Date.now() + 1}-${Math.random().toString(36).slice(2, 7)}`,
+      role: 'assistant',
+      content: generateAIResponse(company, question),
+      timestamp: timeString,
+    };
+
+    setChatMessages((messages) => [...messages, userMsg, assistantMsg]);
     setChatInput('');
   };
 
@@ -314,12 +381,14 @@ function HistoryCard({ item, index, onClick }: { item: HistoryItem; index: numbe
   </motion.button>;
 }
 
-function IntelligencePage({ company, isResearching, researchStep, reportReady, onBack, onCompetitors, chatMessages, chatInput, setChatInput, askQuestion }: { company: Company; isResearching: boolean; researchStep: number; reportReady: boolean; onBack: () => void; onCompetitors: () => void; chatMessages: string[]; chatInput: string; setChatInput: (value: string) => void; askQuestion: () => void }) {
+function IntelligencePage({ company, isResearching, researchStep, reportReady, onBack, onCompetitors, chatMessages, chatInput, setChatInput, askQuestion }: { company: Company; isResearching: boolean; researchStep: number; reportReady: boolean; onBack: () => void; onCompetitors: () => void; chatMessages: ChatMessage[]; chatInput: string; setChatInput: (value: string) => void; askQuestion: (overridePrompt?: string) => void }) {
   return <motion.main className="intelligence-page" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
     <div className="workspace-bar"><button className="back-button" onClick={onBack}><ArrowLeft size={16} /> CORTEX</button><div className="workspace-company"><span className="status-pulse" /> {company} <span className="workspace-label">/ intelligence</span></div><button className="competitor-button" onClick={onCompetitors}>Competitive landscape <ArrowUpRight size={16} /></button></div>
     {!reportReady && <ResearchView company={company} isResearching={isResearching} researchStep={researchStep} />}
-    {reportReady && <ReportView company={company} />}
-    {reportReady && <ChatDock company={company} messages={chatMessages} input={chatInput} setInput={setChatInput} onAsk={askQuestion} />}
+    {reportReady && <>
+      <ReportView company={company} />
+      <ChatSection company={company} messages={chatMessages} input={chatInput} setInput={setChatInput} onAsk={askQuestion} />
+    </>}
   </motion.main>;
 }
 
@@ -361,593 +430,223 @@ function ReferenceNumberedList({ items }: { items: string[] }) { return <ol clas
 
 
 
-function ChatDock({ company, messages, input, setInput, onAsk }: { company: Company; messages: string[]; input: string; setInput: (value: string) => void; onAsk: () => void }) {
-  return <div className="chat-dock"><AnimatePresence>{messages.length > 0 && <motion.div className="chat-response" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}><div className="chat-avatar"><Sparkles size={14} /></div><div><p className="chat-question">{messages[messages.length - 1]}</p><p className="chat-answer">CORTEX found this signal consistently across the collected intelligence: {company} is expanding its advantage by turning infrastructure depth into a broader platform relationship with enterprise buyers.</p></div></motion.div>}</AnimatePresence><form className="chat-input" onSubmit={(event) => { event.preventDefault(); onAsk(); }}><Sparkles size={17} /><input value={input} onChange={(event) => setInput(event.target.value)} placeholder={`Ask anything about ${company}...`} /><button type="submit"><ArrowUpRight size={17} /></button></form><div className="suggested-questions"><span>Try asking</span>{['Why are they expanding?', 'Who are the strongest competitors?', 'What signals did you find?'].map((question) => <button key={question} onClick={() => setInput(question)}>{question}</button>)}</div></div>;
-}
+function ChatSection({ company, messages, input, setInput, onAsk }: { company: Company; messages: ChatMessage[]; input: string; setInput: (value: string) => void; onAsk: (overridePrompt?: string) => void }) {
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
-function CompetitorPage({ company, onBack }: { company: Company; onBack: () => void }) {
-  return <motion.main className="competitor-page" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-    <div className="competitor-header"><button className="back-button" onClick={onBack}><ArrowLeft size={16} /> {company} intelligence</button><div className="present-label"><span className="nav-dot" /> Presentation view</div><button className="present-button"><span /> Present mode <ArrowUpRight size={15} /></button></div>
-    <div className="competitor-title"><div><p className="eyebrow small"><span className="eyebrow-line" /> Comparative intelligence / 02</p><h1>Competitive<br /><em>landscape.</em></h1></div><p>How {company}&apos;s digital presence compares<br />with its closest competitors.</p></div>
-    <div className="legend-bar">
-      <span className="legend-label">Legend</span>
-      {(Object.keys(companyLabels) as CompanyKey[]).map((key) => (
-        <span key={key} className={`legend-item ${key === 'target' ? 'legend-target' : ''}`}>
-          <span className="legend-dot" style={{ backgroundColor: companyColors[key] }} />
-          {companyLabels[key]}{key === 'target' ? ' (target)' : ''}
-        </span>
-      ))}
-    </div>
-    <BentoOverviewSection company={company} />
-    <SectionBlock id="snapshot-section" index="01" title="Competitive Snapshot" subtitle="Relative digital presence across the major channels." insight={sectionInsights.snapshot}>
-      <GroupedBarChart data={snapshotData} />
-    </SectionBlock>
-    <SectionBlock id="linkedin-section" index="02" title="LinkedIn Presence" subtitle="Follower count with growth, engagement, and publishing signals." insight={sectionInsights.linkedin}>
-      <PrimaryChart rows={linkedInData} metricLabel="Followers" />
-    </SectionBlock>
-    <SectionBlock id="instagram-section" index="03" title="Instagram Presence" subtitle="Follower count and engagement rate, side by side." insight={sectionInsights.instagram}>
-      <PrimaryChart rows={instagramData} metricLabel="Followers" />
-    </SectionBlock>
-    <SectionBlock id="website-section" index="04" title="Website Reach" subtitle="Estimated monthly traffic with source and regional signals." insight={sectionInsights.website}>
-      <PrimaryChart rows={websiteData} metricLabel="Monthly visits" />
-    </SectionBlock>
-    <SectionBlock id="seo-section" index="05" title="Search Presence" subtitle="Authority proxy with backlinks, indexed pages, and speed." insight={sectionInsights.seo}>
-      <PrimaryChart rows={seoData} metricLabel="Authority proxy" />
-    </SectionBlock>
-    <SectionBlock id="video-section" index="06" title="Video Presence" subtitle="YouTube subscribers with views, upload frequency, and catalog size." insight={sectionInsights.video}>
-      <PrimaryChart rows={videoData} metricLabel="Subscribers" />
-    </SectionBlock>
-    <SectionBlock id="paid-section" index="07" title="Paid Presence" subtitle="Detected advertising activity across Meta, Google, LinkedIn, and video." insight={sectionInsights.paid}>
-      <PaidMatrix matrix={paidMatrix} />
-    </SectionBlock>
-    <SectionBlock id="cross-section" index="08" title="Digital Presence Across Channels" subtitle="The full competitive picture in one view." insight={sectionInsights.cross} hero>
-      <CrossPlatformChart data={crossPlatformData} />
-    </SectionBlock>
-    <GapInsights />
-    <DataTransparency />
-  </motion.main>;
-}
-
-function SectionBlock({ id, index, title, subtitle, insight, children, hero = false }: { id?: string; index: string; title: string; subtitle: string; insight: string; children: ReactNode; hero?: boolean }) {
-  return <section id={id} className={`viz-section ${hero ? 'viz-hero' : ''}`}>
-    <div className="viz-header">
-      <div><p className="viz-index">{index}</p><h2>{title}</h2><p className="viz-subtitle">{subtitle}</p></div>
-    </div>
-    <div className="viz-body">{children}</div>
-    <div className="viz-insight"><span className="viz-insight-mark" /><p>{insight}</p></div>
-  </section>;
-}
-
-function getBezierPath(points: { x: number; y: number }[]): string {
-  if (points.length === 0) return '';
-  let d = `M ${points[0].x},${points[0].y}`;
-  for (let i = 0; i < points.length - 1; i++) {
-    const current = points[i];
-    const next = points[i + 1];
-    const mx = (current.x + next.x) / 2;
-    d += ` C ${mx},${current.y} ${mx},${next.y} ${next.x},${next.y}`;
-  }
-  return d;
-}
-
-function LinkedInIcon() {
-  return (
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.25V10.9H6.46M7.86 6.74a1.47 1.47 0 0 0-1.47 1.47c0 .81.66 1.47 1.47 1.47.81 0 1.47-.66 1.47-1.47 0-.81-.66-1.47-1.47-1.47Z" />
-    </svg>
-  );
-}
-
-function InstagramIcon() {
-  return (
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-      <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
-      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-      <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
-    </svg>
-  );
-}
-
-function YouTubeIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-    </svg>
-  );
-}
-
-function BentoOverviewSection({ company }: { company: Company }) {
-  const linkedinRow = snapshotData.find((d) => d.category === 'LinkedIn');
-  const instagramRow = snapshotData.find((d) => d.category === 'Instagram');
-  const youtubeRow = snapshotData.find((d) => d.category === 'YouTube');
-
-  const getTargetMetric = (group: typeof snapshotData[0] | undefined) => {
-    if (!group) return { val: '—', rankStr: '—' };
-    const targetItem = group.rows.find((r) => r.key === 'target');
-    const sorted = [...group.rows].sort((a, b) => b.pct - a.pct);
-    const rank = sorted.findIndex((r) => r.key === 'target') + 1;
-    return {
-      val: targetItem?.raw ?? '—',
-      rankStr: `Rank #${rank} / ${group.rows.length}`,
-      rankNum: rank,
-    };
-  };
-
-  const linkedinInfo = getTargetMetric(linkedinRow);
-  const instagramInfo = getTargetMetric(instagramRow);
-  const youtubeInfo = getTargetMetric(youtubeRow);
-
-  const scrollToSection = (id: string) => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  useEffect(() => {
+    if (messages.length > 0) {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }
-  };
+  }, [messages]);
 
   return (
-    <section className="bento-overview-section">
-      <div className="bento-grid">
-        {/* Card 1: Large Graph Hero Card */}
-        <motion.div
-          className="bento-card bento-hero-card"
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
-          <div className="bento-hero-header">
-            <div>
-              <span className="bento-kicker">Digital Presence Trajectory</span>
-              <h2>Competitive Ranking</h2>
-              <p className="bento-hero-subtitle">Who is leading across digital channels</p>
-            </div>
-            <div className="bento-hero-badge">
-              <span className="bento-badge-dot" />
-              Relative competitive ranking
-            </div>
-          </div>
+    <section className="chat-conversation-section">
+      <div className="chat-section-header">
+        <div className="reference-kicker"><Sparkles size={13} /> 08 / Interactive Intelligence</div>
+        <h2>Ask CORTEX about {company}</h2>
+        <p className="chat-section-subtitle">
+          Query primary sources, business signals, and competitive insights in real-time.
+        </p>
+      </div>
 
-          <BentoLineChart />
+      <div className="chat-box-card">
+        <div className="chat-messages-container" tabIndex={0} aria-label="Conversation thread">
+          {messages.length === 0 ? (
+            <div className="chat-empty-thread">
+              <div className="chat-empty-icon"><Sparkles size={18} /></div>
+              <p className="chat-empty-title">Continuous Intelligence Thread</p>
+              <p className="chat-empty-desc">
+                Ask specific questions about {company}’s strategy, competitors, transformation signals, or business vulnerabilities.
+              </p>
+            </div>
+          ) : (
+            <div className="chat-messages-list">
+              {messages.map((msg) => (
+                <motion.div
+                  key={msg.id}
+                  className={`chat-message-row ${msg.role === 'user' ? 'user-message' : 'assistant-message'}`}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {msg.role === 'assistant' ? (
+                    <div className="chat-avatar">
+                      <Sparkles size={14} />
+                    </div>
+                  ) : (
+                    <div className="chat-user-avatar">
+                      <span>You</span>
+                    </div>
+                  )}
+                  <div className="chat-message-bubble">
+                    <div className="chat-message-meta">
+                      <span className="chat-author">{msg.role === 'assistant' ? 'CORTEX' : 'You'}</span>
+                      {msg.timestamp && <span className="chat-timestamp">{msg.timestamp}</span>}
+                    </div>
+                    <p className={msg.role === 'assistant' ? 'chat-answer' : 'chat-question-text'}>
+                      {msg.content}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+              <div ref={messagesEndRef} />
+            </div>
+          )}
+        </div>
 
-          <div className="bento-chart-legend">
-            {(Object.keys(companyLabels) as CompanyKey[]).map((key) => (
-              <span key={key} className="bento-legend-item">
-                <span className="bento-legend-dot" style={{ backgroundColor: companyColors[key] }} />
-                <span className="bento-legend-name">{companyLabels[key]}</span>
-                {key === 'target' && <span className="bento-target-tag">Target</span>}
-              </span>
+        <div className="chat-bottom-bar">
+          <form
+            className="chat-input"
+            onSubmit={(event) => {
+              event.preventDefault();
+              onAsk();
+            }}
+          >
+            <Sparkles size={17} />
+            <input
+              value={input}
+              onChange={(event) => setInput(event.target.value)}
+              placeholder={`Ask anything about ${company}...`}
+              aria-label={`Ask anything about ${company}`}
+            />
+            <button type="submit" aria-label="Send question">
+              <ArrowUpRight size={17} />
+            </button>
+          </form>
+
+          <div className="suggested-questions">
+            <span>Try asking</span>
+            {[
+              'Why are they expanding?',
+              'Who are the strongest competitors?',
+              'What signals did you find?',
+            ].map((question) => (
+              <button
+                key={question}
+                type="button"
+                onClick={() => onAsk(question)}
+              >
+                {question}
+              </button>
             ))}
           </div>
-        </motion.div>
-
-        {/* Right Column: Platform Metric Cards */}
-        <div className="bento-right-col">
-          <div className="bento-right-top-row">
-            {/* Card 2: LinkedIn */}
-            <motion.button
-              className="bento-card bento-metric-card linkedin-card"
-              onClick={() => scrollToSection('linkedin-section')}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.08 }}
-              whileHover={{ y: -3 }}
-            >
-              <div className="bento-card-top">
-                <div className="platform-icon-badge linkedin-badge">
-                  <LinkedInIcon />
-                </div>
-                <span className="rank-tag">{linkedinInfo.rankStr}</span>
-              </div>
-              <div className="bento-card-content">
-                <span className="platform-name">LinkedIn</span>
-                <div className="metric-value-row">
-                  <span className="metric-value">{linkedinInfo.val}</span>
-                  <span className="metric-unit">Followers</span>
-                </div>
-              </div>
-              <div className="bento-card-footer">
-                <span>View LinkedIn Presence</span>
-                <ChevronRight size={13} />
-              </div>
-            </motion.button>
-
-            {/* Card 3: Instagram */}
-            <motion.button
-              className="bento-card bento-metric-card instagram-card"
-              onClick={() => scrollToSection('instagram-section')}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.14 }}
-              whileHover={{ y: -3 }}
-            >
-              <div className="bento-card-top">
-                <div className="platform-icon-badge instagram-badge">
-                  <InstagramIcon />
-                </div>
-                <span className="rank-tag">{instagramInfo.rankStr}</span>
-              </div>
-              <div className="bento-card-content">
-                <span className="platform-name">Instagram</span>
-                <div className="metric-value-row">
-                  <span className="metric-value">{instagramInfo.val}</span>
-                  <span className="metric-unit">Followers</span>
-                </div>
-              </div>
-              <div className="bento-card-footer">
-                <span>View Instagram Presence</span>
-                <ChevronRight size={13} />
-              </div>
-            </motion.button>
-          </div>
-
-          {/* Card 4: YouTube */}
-          <motion.button
-            className="bento-card bento-metric-card youtube-card"
-            onClick={() => scrollToSection('video-section')}
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            whileHover={{ y: -3 }}
-          >
-            <div className="bento-card-top">
-              <div className="platform-icon-badge youtube-badge">
-                <YouTubeIcon />
-              </div>
-              <span className="rank-tag rank-tag-leader">{youtubeInfo.rankStr}</span>
-            </div>
-            <div className="bento-card-content">
-              <span className="platform-name">YouTube</span>
-              <div className="metric-value-row">
-                <span className="metric-value">{youtubeInfo.val}</span>
-                <span className="metric-unit">Subscribers</span>
-              </div>
-            </div>
-            <div className="bento-card-footer">
-              <span>View Video Presence</span>
-              <ChevronRight size={13} />
-            </div>
-          </motion.button>
         </div>
       </div>
     </section>
   );
 }
 
-function BentoLineChart() {
-  const [hoverIndex, setHoverIndex] = useState<number | null>(null);
-
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
-
-  const seriesData: Record<CompanyKey, number[]> = {
-    target: [62, 68, 73, 79, 85, 89],
-    compA: [70, 74, 80, 84, 88, 92],
-    compB: [78, 75, 71, 68, 65, 62],
-    compC: [45, 48, 50, 52, 51, 54],
-  };
-
-  const width = 640;
-  const height = 220;
-  const padL = 36;
-  const padR = 20;
-  const padT = 18;
-  const padB = 30;
-
-  const plotW = width - padL - padR;
-  const plotH = height - padT - padB;
-
-  const getX = (index: number) => padL + index * (plotW / (months.length - 1));
-  const getY = (val: number) => padT + plotH * (1 - val / 100);
-
-  const companiesKeys = Object.keys(companyLabels) as CompanyKey[];
-
-  const paths = companiesKeys.map((key) => {
-    const points = seriesData[key].map((val, idx) => ({ x: getX(idx), y: getY(val) }));
-    return { key, path: getBezierPath(points), points };
-  });
-
-  const targetPoints = seriesData.target.map((val, idx) => ({ x: getX(idx), y: getY(val) }));
-  const targetAreaPath = `${getBezierPath(targetPoints)} L ${getX(months.length - 1)},${padT + plotH} L ${getX(0)},${padT + plotH} Z`;
-
+function CompetitorPage({ company, onBack }: { company: Company; onBack: () => void }) {
   return (
-    <div className="bento-chart-container">
-      <svg
-        className="bento-svg-chart"
-        viewBox={`0 0 ${width} ${height}`}
-        onMouseLeave={() => setHoverIndex(null)}
-        onMouseMove={(e) => {
-          const rect = e.currentTarget.getBoundingClientRect();
-          const mouseX = e.clientX - rect.left;
-          const svgX = (mouseX / rect.width) * width;
-          let closestIdx = 0;
-          let minDiff = Infinity;
-          months.forEach((_, idx) => {
-            const diff = Math.abs(svgX - getX(idx));
-            if (diff < minDiff) {
-              minDiff = diff;
-              closestIdx = idx;
-            }
-          });
-          setHoverIndex(closestIdx);
-        }}
-      >
-        <defs>
-          <linearGradient id="targetAreaGradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#6d4aff" stopOpacity="0.16" />
-            <stop offset="100%" stopColor="#6d4aff" stopOpacity="0.0" />
-          </linearGradient>
-        </defs>
+    <motion.main className="competitor-page" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+      <div className="competitor-header">
+        <button className="back-button" onClick={onBack}>
+          <ArrowLeft size={16} /> {company} intelligence
+        </button>
+        <div className="present-label">
+          <span className="nav-dot" /> Presentation view
+        </div>
+        <button className="present-button">
+          <span /> Present mode <ArrowUpRight size={15} />
+        </button>
+      </div>
 
-        {/* Grid lines */}
-        {[0, 25, 50, 75, 100].map((val) => {
-          const y = getY(val);
-          return (
-            <g key={val}>
-              <line x1={padL} y1={y} x2={width - padR} y2={y} stroke="#eeeDE9" strokeDasharray="3 3" strokeWidth="1" />
-              <text x={padL - 8} y={y + 3} textAnchor="end" fontSize="9" fill="#aaa7ad" fontFamily="DM Mono, monospace">
-                {val}
-              </text>
-            </g>
-          );
-        })}
+      <div className="competitor-title">
+        <div>
+          <p className="eyebrow small">
+            <span className="eyebrow-line" /> Comparative intelligence / 02
+          </p>
+          <h1>
+            Competitive
+            <br />
+            <em>landscape.</em>
+          </h1>
+        </div>
+        <p>
+          How {company}&apos;s digital presence compares
+          <br />
+          with its closest competitors.
+        </p>
+      </div>
 
-        {/* X axis labels */}
-        {months.map((m, idx) => (
-          <text key={m} x={getX(idx)} y={height - 8} textAnchor="middle" fontSize="10" fill="#9a96a0" fontFamily="DM Mono, monospace">
-            {m}
-          </text>
+      <div className="legend-bar">
+        <span className="legend-label">Legend</span>
+        {(Object.keys(companyLabels) as CompanyKey[]).map((key) => (
+          <span key={key} className={`legend-item ${key === 'target' ? 'legend-target' : ''}`}>
+            <span className="legend-dot" style={{ backgroundColor: companyColors[key] }} />
+            {companyLabels[key]}
+            {key === 'target' ? ' (target)' : ''}
+          </span>
         ))}
+      </div>
 
-        {/* Target Area Fill */}
-        <motion.path
-          d={targetAreaPath}
-          fill="url(#targetAreaGradient)"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1 }}
-        />
+      <CompetitiveRankingChart
+        company={company}
+        snapshotData={snapshotData}
+        companyLabels={companyLabels}
+        companyColors={companyColors}
+      />
 
-        {/* Company Lines */}
-        {paths.map(({ key, path }) => (
-          <motion.path
-            key={key}
-            d={path}
-            fill="none"
-            stroke={companyColors[key]}
-            strokeWidth={key === 'target' ? 2.8 : 1.8}
-            strokeLinecap="round"
-            initial={{ pathLength: 0 }}
-            whileInView={{ pathLength: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1.2, ease: 'easeOut' }}
-          />
-        ))}
+      <CompetitiveSnapshot
+        data={snapshotData}
+        insight={sectionInsights.snapshot}
+        companyLabels={companyLabels}
+        companyColors={companyColors}
+      />
 
-        {/* Data points */}
-        {paths.map(({ key, points }) =>
-          points.map((pt, idx) => (
-            <circle
-              key={`${key}-${idx}`}
-              cx={pt.x}
-              cy={pt.y}
-              r={key === 'target' ? 3.5 : 2.5}
-              fill={companyColors[key]}
-              stroke="#fff"
-              strokeWidth={1.5}
-            />
-          ))
-        )}
+      <LinkedInPresence
+        data={linkedInData}
+        insight={sectionInsights.linkedin}
+        companyLabels={companyLabels}
+        companyColors={companyColors}
+      />
 
-        {/* Hover vertical line & active dots */}
-        {hoverIndex !== null && (
-          <g>
-            <line
-              x1={getX(hoverIndex)}
-              y1={padT}
-              x2={getX(hoverIndex)}
-              y2={padT + plotH}
-              stroke="#6d4aff"
-              strokeOpacity="0.3"
-              strokeDasharray="4 4"
-              strokeWidth="1.5"
-            />
-            {companiesKeys.map((key) => {
-              const val = seriesData[key][hoverIndex];
-              const cx = getX(hoverIndex);
-              const cy = getY(val);
-              return (
-                <circle
-                  key={`hover-dot-${key}`}
-                  cx={cx}
-                  cy={cy}
-                  r={key === 'target' ? 5.5 : 4.5}
-                  fill={companyColors[key]}
-                  stroke="#fff"
-                  strokeWidth="2"
-                />
-              );
-            })}
-          </g>
-        )}
-      </svg>
+      <InstagramPresence
+        data={instagramData}
+        insight={sectionInsights.instagram}
+        companyLabels={companyLabels}
+        companyColors={companyColors}
+      />
 
-      {/* Hover Tooltip Overlay */}
-      {hoverIndex !== null && (
-        <div
-          className="bento-chart-tooltip"
-          style={{
-            left: `${Math.min(Math.max((getX(hoverIndex) / width) * 100, 15), 85)}%`,
-          }}
-        >
-          <div className="tooltip-header">{months[hoverIndex]} Relative Index</div>
-          {companiesKeys
-            .map((k) => ({ key: k, val: seriesData[k][hoverIndex] }))
-            .sort((a, b) => b.val - a.val)
-            .map((item) => (
-              <div key={item.key} className="tooltip-line">
-                <span className="tooltip-dot" style={{ backgroundColor: companyColors[item.key] }} />
-                <span className="tooltip-company-name">
-                  {companyLabels[item.key]}
-                  {item.key === 'target' ? ' (you)' : ''}
-                </span>
-                <span className="tooltip-val">{item.val}</span>
-              </div>
-            ))}
-        </div>
-      )}
-    </div>
+      <WebsiteReach
+        data={websiteData}
+        insight={sectionInsights.website}
+        companyLabels={companyLabels}
+        companyColors={companyColors}
+      />
+
+      <SearchPresence
+        data={seoData}
+        insight={sectionInsights.seo}
+        companyLabels={companyLabels}
+        companyColors={companyColors}
+      />
+
+      <VideoPresence
+        data={videoData}
+        insight={sectionInsights.video}
+        companyLabels={companyLabels}
+        companyColors={companyColors}
+      />
+
+      <PaidPresence
+        matrix={paidMatrix}
+        insight={sectionInsights.paid}
+        companyLabels={companyLabels}
+        companyColors={companyColors}
+      />
+
+      <DigitalPresenceAcrossChannels
+        data={crossPlatformData}
+        insight={sectionInsights.cross}
+        companyLabels={companyLabels}
+        companyColors={companyColors}
+      />
+
+      <CompetitiveGapsSummary />
+      <DataTransparency />
+    </motion.main>
   );
-}
-
-function BarRow({ row, metricLabel }: { row: SeriesRow; metricLabel?: string }) {
-  const [hovered, setHovered] = useState(false);
-  return (
-    <div className="bar-row" onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} style={{ ['--bar-color' as string]: companyColors[row.key] }}>
-      <span className="bar-company">{companyLabels[row.key]}{row.key === 'target' ? ' (you)' : ''}</span>
-      <div className="bar-track-h">
-        <motion.div className="bar-fill-h" initial={{ width: 0 }} whileInView={{ width: `${row.pct}%` }} viewport={{ once: true }} transition={{ duration: 0.7, ease: 'easeOut' }} style={{ backgroundColor: companyColors[row.key] }} />
-        <span className="bar-value-h" style={{ color: companyColors[row.key] }}>{row.raw}</span>
-      </div>
-      <AnimatePresence>{hovered && row.sub && (
-        <motion.div className="bar-tooltip" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 6 }} transition={{ duration: 0.15 }}>
-          <p className="tooltip-company" style={{ color: companyColors[row.key] }}>{companyLabels[row.key]}</p>
-          <p className="tooltip-metric">{metricLabel}: <strong>{row.raw}</strong></p>
-          {row.sub.map((s) => <div key={s.label} className="tooltip-sub"><span>{s.label}</span><strong>{s.value}</strong></div>)}
-        </motion.div>
-      )}</AnimatePresence>
-    </div>
-  );
-}
-
-function PrimaryChart({ rows, metricLabel }: { rows: SeriesRow[]; metricLabel: string }) {
-  return <div className="primary-chart">
-    <div className="chart-metric-label">{metricLabel}</div>
-    <div className="bar-rows">{rows.map((row) => <BarRow key={row.key} row={row} metricLabel={metricLabel} />)}</div>
-    {rows[0]?.sub && <div className="sub-metrics-grid">
-      {rows[0].sub.map((s) => (
-        <div key={s.label} className="sub-metric-col">
-          <p className="sub-metric-label">{s.label}</p>
-          {rows.map((row) => <div key={row.key} className="sub-metric-cell" style={{ color: companyColors[row.key] }}>
-            <span className="sub-dot" style={{ backgroundColor: companyColors[row.key] }} />
-            <span className="sub-company">{companyLabels[row.key]}</span>
-            <strong>{row.sub?.find((x) => x.label === s.label)?.value ?? '—'}</strong>
-          </div>)}
-        </div>
-      ))}
-    </div>}
-  </div>;
-}
-
-function GroupedBarChart({ data }: { data: { category: string; rows: SeriesRow[] }[] }) {
-  return <div className="grouped-chart">
-    {data.map((group) => (
-      <div key={group.category} className="grouped-category">
-        <p className="grouped-cat-label">{group.category}</p>
-        <div className="grouped-rows">
-          {group.rows.map((row) => (
-            <div key={row.key} className="grouped-bar-row" style={{ ['--bar-color' as string]: companyColors[row.key] }}>
-              <span className="grouped-bar-company">{companyLabels[row.key]}</span>
-              <div className="grouped-bar-track">
-                <motion.div className="grouped-bar-fill" initial={{ width: 0 }} whileInView={{ width: `${row.pct}%` }} viewport={{ once: true }} transition={{ duration: 0.6 }} style={{ backgroundColor: companyColors[row.key] }} />
-              </div>
-              <span className="grouped-bar-value" style={{ color: companyColors[row.key] }}>{row.raw}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-    ))}
-  </div>;
-}
-
-function CrossPlatformChart({ data }: { data: { channel: string; rows: SeriesRow[] }[] }) {
-  const channels = data.map((d) => d.category);
-  const companies = Object.keys(companyLabels) as CompanyKey[];
-  return <div className="cross-chart">
-    <div className="cross-grid">
-      <div className="cross-corner" />
-      {channels.map((ch) => <div key={ch} className="cross-channel-header">{ch}</div>)}
-      {companies.map((compKey) => (
-        <Fragment key={compKey}>
-          <div className="cross-company-label" style={{ color: companyColors[compKey] }}>
-            <span className="cross-dot" style={{ backgroundColor: companyColors[compKey] }} />
-            {companyLabels[compKey]}{compKey === 'target' ? ' (you)' : ''}
-          </div>
-          {channels.map((ch) => {
-            const row = data.find((d) => d.category === ch)?.rows.find((r) => r.key === compKey);
-            return <div key={ch} className="cross-cell" style={{ ['--bar-color' as string]: companyColors[compKey] }}>
-              <div className="cross-bar-track">
-                <motion.div className="cross-bar-fill" initial={{ width: 0 }} whileInView={{ width: `${row?.pct ?? 0}%` }} viewport={{ once: true }} transition={{ duration: 0.6 }} style={{ backgroundColor: companyColors[compKey] }} />
-              </div>
-              <span className="cross-value">{row?.raw ?? '—'}</span>
-            </div>;
-          })}
-        </Fragment>
-      ))}
-    </div>
-  </div>;
-}
-
-function PaidMatrix({ matrix }: { matrix: { key: CompanyKey; meta: 'detected' | 'none' | 'unknown'; google: 'detected' | 'none' | 'unknown'; linkedin: 'detected' | 'none' | 'unknown'; video: 'detected' | 'none' | 'unknown' }[] }) {
-  const channels: { key: 'meta' | 'google' | 'linkedin' | 'video'; label: string }[] = [{ key: 'meta', label: 'Meta' }, { key: 'google', label: 'Google' }, { key: 'linkedin', label: 'LinkedIn' }, { key: 'video', label: 'Video' }];
-  return <div className="paid-matrix">
-    <div className="pm-corner" />
-    {channels.map((ch) => <div key={ch.key} className="pm-channel-header">{ch.label}</div>)}
-    {matrix.map((row) => (
-      <Fragment key={row.key}>
-        <div className="pm-company-label" style={{ color: companyColors[row.key] }}>
-          <span className="pm-dot" style={{ backgroundColor: companyColors[row.key] }} />
-          {companyLabels[row.key]}{row.key === 'target' ? ' (you)' : ''}
-        </div>
-        {channels.map((ch) => {
-          const status = row[ch.key];
-          return <div key={ch.key} className="pm-cell">
-            {status === 'detected' ? <span className="pm-detected" style={{ borderColor: companyColors[row.key], color: companyColors[row.key] }}>●</span>
-              : status === 'none' ? <span className="pm-none">○</span>
-                : <span className="pm-unknown">—</span>}
-          </div>;
-        })}
-      </Fragment>
-    ))}
-    <div className="pm-legend">
-      <span><span className="pm-detected" style={{ borderColor: '#6d4aff', color: '#6d4aff' }}>●</span> Detected</span>
-      <span><span className="pm-none">○</span> Not detected — no publicly observable evidence found</span>
-      <span><span className="pm-unknown">—</span> Unknown</span>
-    </div>
-  </div>;
-}
-
-function GapInsights() {
-  const insights = [
-    { metric: 'Instagram engagement', text: 'AMD\'s 5.4% engagement rate is 2.6x the target\'s 2.1% — the widest relative gap on the page.', tag: 'Largest gap' },
-    { metric: 'YouTube subscribers', text: 'Qualcomm leads with 11K subscribers vs the target\'s 1.2K — a 9.2x difference.', tag: 'Falling behind' },
-    { metric: 'Website reach', text: 'The target leads with 12.4M monthly visits, 51% ahead of Intel.', tag: 'Ahead' },
-    { metric: 'Paid presence', text: 'AMD is the only competitor detected across all four paid channels.', tag: 'Watch' },
-  ];
-  return <section className="gap-insights-section">
-    <div className="gap-heading"><p className="eyebrow small">Read between the numbers</p><h2>Competitive<br /><em>gaps.</em></h2></div>
-    <div className="gap-insights-grid">{insights.map((ins) => (
-      <div key={ins.metric} className="gap-insight-card">
-        <span className="gap-insight-tag">{ins.tag}</span>
-        <h3>{ins.metric}</h3>
-        <p>{ins.text}</p>
-      </div>
-    ))}</div>
-  </section>;
-}
-
-function DataTransparency() {
-  return <section className="data-transparency">
-    <div className="dt-header"><p className="eyebrow small">Data transparency</p><h3>How this was collected</h3></div>
-    <div className="dt-body">
-      <p>All metrics are derived from publicly observable digital signals — social profiles, website traffic estimators, search indexes, and ad libraries. Values marked as estimates reflect ranges, not precise counts. &quot;Not detected&quot; means no publicly observable evidence was found, not that the company does not advertise. The authority proxy is a composite of backlinks, indexed pages, and page speed — it is not an official Google score.</p>
-      <div className="dt-meta">
-        <span>18 sources collected</span><span>High confidence</span><span>Updated just now</span>
-      </div>
-    </div>
-  </section>;
 }
 
 export default App;
