@@ -102,15 +102,19 @@ export function Home({
           <button className="history-add" onClick={onNew}>
             <span className="card-ambient-light" />
             <span className="card-concentric-rings" />
-            <span>
-              <Plus size={20} />
-            </span>
-            <strong>
-              New company
-              <br />
-              analysis
-            </strong>
-            <ArrowUpRight size={17} />
+            <div className="card-top">
+              <span className="company-avatar">
+                <Plus size={18} />
+              </span>
+            </div>
+            <div className="history-add-bottom">
+              <strong>
+                New company
+                <br />
+                analysis
+              </strong>
+              <ArrowUpRight size={18} />
+            </div>
           </button>
         </div>
       </section>
