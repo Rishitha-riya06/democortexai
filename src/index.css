@@ -1699,7 +1699,8 @@ input:focus-visible {
 }
 
 .pm-detected {
-    font-size: 18px;
+    font-size: 16px;
+    font-weight: 700;
 }
 
 .pm-none {

@@ -39,7 +39,7 @@ export function PaidMatrix({ matrix, companyLabels, companyColors }: PaidMatrixP
                     className="pm-detected"
                     style={{ borderColor: companyColors[row.key], color: companyColors[row.key] }}
                   >
-                    ●
+                    ✓
                   </span>
                 ) : status === 'none' ? (
                   <span className="pm-none">○</span>
@@ -54,7 +54,7 @@ export function PaidMatrix({ matrix, companyLabels, companyColors }: PaidMatrixP
       <div className="pm-legend">
         <span>
           <span className="pm-detected" style={{ borderColor: '#6d4aff', color: '#6d4aff' }}>
-            ●
+            ✓
           </span>{' '}
           Detected
         </span>
