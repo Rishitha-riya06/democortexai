@@ -13,24 +13,39 @@ export function RecentAnalysisCard({ item, index, onClick }: RecentAnalysisCardP
     <motion.button
       className={`history-card card-${index}`}
       onClick={onClick}
+      style={{
+        background: item.bgGradient || item.color,
+        borderColor: item.borderColor || 'rgba(255, 255, 255, 0.2)',
+      }}
       initial={{ opacity: 0, y: 18 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.05 }}
       whileHover={{ y: -5 }}
     >
-      <span className="card-glow" />
+      <span className="card-ambient-light" />
+      <span className="card-concentric-rings" />
+      
       <div className="card-top">
-        <span className="company-avatar" style={{ backgroundColor: item.color }}>
+        <span
+          className="company-avatar"
+          style={{
+            backgroundColor: item.avatarBg || 'rgba(255, 255, 255, 0.22)',
+            color: '#ffffff',
+            borderColor: item.borderColor || 'rgba(255, 255, 255, 0.2)',
+          }}
+        >
           {item.monogram}
         </span>
         <span className="card-open">
           <ArrowUpRight size={16} />
         </span>
       </div>
+
       <div className="card-chat-label">
         <span className="chat-signal" /> CORTEX brief <span className="card-time">{item.time}</span>
       </div>
+
       <div className="card-body">
         <p className="card-industry">{item.industry}</p>
         <h3>{item.name}</h3>
@@ -41,6 +56,7 @@ export function RecentAnalysisCard({ item, index, onClick }: RecentAnalysisCardP
           <p>{item.preview}</p>
         </div>
       </div>
+
       <div className="card-bottom">
         <span className="card-question">View intelligence</span>
         <span className="card-status">

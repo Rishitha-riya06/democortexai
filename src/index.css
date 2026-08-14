@@ -380,62 +380,61 @@ input:focus-visible {
     isolation: isolate;
     overflow: hidden;
     text-align: left;
-    border: 1px solid #e5e3df;
     border-radius: 23px;
-    background: #fff;
     padding: 22px;
-    color: #151318;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
     display: flex;
     flex-direction: column;
-    transition: border-color .25s, box-shadow .25s;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+    transition: border-color .25s, box-shadow .25s, transform .25s;
 }
 
 .history-card:hover,
 .history-add:hover {
-    border-color: #c8bbff;
-    box-shadow: 0 18px 38px rgba(40, 30, 60, .08);
+    border-color: rgba(255, 255, 255, 0.45);
+    box-shadow: 0 20px 42px rgba(0, 0, 0, 0.16);
 }
 
-.history-card:after {
-    content: '';
+.card-ambient-light {
     position: absolute;
-    z-index: -1;
-    width: 170px;
-    height: 170px;
-    right: -76px;
-    bottom: -86px;
+    top: -50px;
+    left: -50px;
+    width: 220px;
+    height: 220px;
     border-radius: 50%;
-    background: #f0ebff;
-    opacity: .6;
-    transition: transform .45s, opacity .45s;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.28) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
 }
 
-.history-card:hover:after {
-    transform: scale(1.45);
-    opacity: .95;
-}
-
-.card-glow {
+.card-concentric-rings {
     position: absolute;
-    z-index: -1;
-    width: 190px;
-    height: 190px;
-    top: -120px;
-    left: -80px;
+    right: -40px;
+    bottom: -40px;
+    width: 280px;
+    height: 280px;
+    pointer-events: none;
     border-radius: 50%;
-    background: #e4dcff;
-    filter: blur(35px);
-    opacity: .45;
-    transition: transform .45s;
+    background: radial-gradient(circle, 
+        rgba(255, 255, 255, 0.15) 0%, 
+        rgba(255, 255, 255, 0.15) 36%, 
+        rgba(255, 255, 255, 0.09) 37%, 
+        rgba(255, 255, 255, 0.09) 62%, 
+        rgba(255, 255, 255, 0.04) 63%, 
+        rgba(255, 255, 255, 0.04) 86%, 
+        transparent 87%);
+    z-index: 0;
+    transition: transform .45s ease;
 }
 
-.history-card:hover .card-glow {
-    transform: translate(35px, 35px);
+.history-card:hover .card-concentric-rings,
+.history-add:hover .card-concentric-rings {
+    transform: scale(1.08);
 }
 
 .card-0 {
     grid-row: span 2;
-    background: linear-gradient(145deg, #fff 60%, #f3efff);
 }
 
 .card-1 {
@@ -459,7 +458,9 @@ input:focus-visible {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    color: #9a96a0;
+    color: rgba(255, 255, 255, 0.85);
+    position: relative;
+    z-index: 1;
 }
 
 .card-open {
@@ -467,15 +468,18 @@ input:focus-visible {
     place-items: center;
     width: 28px;
     height: 28px;
-    border: 1px solid #e9e7e2;
+    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 50%;
-    transition: background .2s, color .2s, transform .2s;
+    background: rgba(255, 255, 255, 0.18);
+    color: #ffffff;
+    backdrop-filter: blur(4px);
+    transition: background .2s, color .2s, transform .2s, border-color .2s;
 }
 
 .history-card:hover .card-open {
-    background: #6d4aff;
-    color: #fff;
-    border-color: #6d4aff;
+    background: #ffffff;
+    color: #151318;
+    border-color: #ffffff;
     transform: rotate(8deg);
 }
 
@@ -485,42 +489,50 @@ input:focus-visible {
     width: 35px;
     height: 35px;
     border-radius: 12px;
-    color: #fff;
-    font-size: 17px;
+    font-size: 16px;
     font-weight: 700;
+    background: rgba(255, 255, 255, 0.22);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(4px);
 }
 
 .card-chat-label {
     display: flex;
     align-items: center;
     gap: 7px;
-    color: #9a96a0;
+    color: rgba(255, 255, 255, 0.85);
     font-family: 'DM Mono', monospace;
     text-transform: uppercase;
     font-size: 8px;
     letter-spacing: .05em;
     margin-top: 17px;
+    position: relative;
+    z-index: 1;
 }
 
 .chat-signal {
     width: 5px;
     height: 5px;
     border-radius: 50%;
-    background: #6d4aff;
-    box-shadow: 0 0 0 4px #f0ebff;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
 }
 
 .card-time {
     margin-left: auto;
-    opacity: .65;
+    opacity: .88;
+    color: rgba(255, 255, 255, 0.85);
 }
 
 .card-body {
     margin-top: auto;
+    position: relative;
+    z-index: 1;
 }
 
 .card-industry {
-    color: #9a96a0;
+    color: rgba(255, 255, 255, 0.85);
     font-family: 'DM Mono', monospace;
     text-transform: uppercase;
     font-size: 9px;
@@ -529,9 +541,11 @@ input:focus-visible {
 }
 
 .card-body h3 {
+    color: #ffffff;
     font-size: 26px;
     letter-spacing: -.06em;
     margin: 0 0 12px;
+    font-weight: 700;
 }
 
 .chat-snippet {
@@ -548,62 +562,78 @@ input:focus-visible {
     height: 21px;
     flex: 0 0 auto;
     border-radius: 7px;
-    background: #f0ebff;
-    color: #6d4aff;
+    background: rgba(255, 255, 255, 0.22);
+    color: #ffffff;
 }
 
 .chat-snippet p {
-    color: #73717a;
+    color: rgba(255, 255, 255, 0.92);
     font-size: 11px;
     line-height: 1.55;
     margin: 0;
 }
 
 .card-bottom {
-    border-top: 1px solid #eeeDE9;
+    border-top: 1px solid rgba(255, 255, 255, 0.22);
     padding-top: 12px;
     margin-top: 20px;
     font-size: 10px;
+    position: relative;
+    z-index: 1;
 }
 
 .card-question {
-    color: #73717a;
+    color: rgba(255, 255, 255, 0.85);
     transition: color .2s;
 }
 
 .history-card:hover .card-question {
-    color: #6d4aff;
+    color: #ffffff;
 }
 
 .card-status {
     display: flex;
     align-items: center;
     gap: 6px;
-    color: #6d4aff;
+    font-weight: 500;
+    color: #ffffff;
 }
 
 .status-light {
     width: 5px;
     height: 5px;
     border-radius: 50%;
-    background: #6d4aff;
+    background: #ffffff;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.4);
 }
 
 .history-add {
     align-items: flex-start;
     justify-content: space-between;
-    background: #151318;
-    color: #fff;
-    border-color: #151318;
+    background: linear-gradient(135deg, #fcd968 0%, #f8c84c 50%, #f3b632 100%);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 10px 28px rgba(243, 182, 50, 0.25);
 }
 
-.history-add>span {
+.history-add:hover {
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 20px 42px rgba(243, 182, 50, 0.35);
+}
+
+.history-add-icon,
+.history-add>span:not(.card-ambient-light):not(.card-concentric-rings) {
     display: grid;
     place-items: center;
     width: 37px;
     height: 37px;
-    background: #6d4aff;
+    background: rgba(255, 255, 255, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 12px;
+    color: #ffffff;
+    backdrop-filter: blur(4px);
+    position: relative;
+    z-index: 1;
 }
 
 .history-add strong {
@@ -611,11 +641,22 @@ input:focus-visible {
     line-height: 1.1;
     letter-spacing: -.05em;
     font-weight: 600;
+    color: #ffffff;
+    position: relative;
+    z-index: 1;
 }
 
 .history-add>svg {
     align-self: flex-end;
-    color: #b9a7ff;
+    color: #ffffff;
+    transition: transform .2s, color .2s;
+    position: relative;
+    z-index: 1;
+}
+
+.history-add:hover>svg {
+    transform: translate(2px, -2px);
+    color: #ffffff;
 }
 
 .footer-note {

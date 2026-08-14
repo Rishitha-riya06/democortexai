@@ -9,6 +9,13 @@ export interface HistoryItem {
   time: string;
   preview: string;
   color: string;
+  textColor?: string;
+  accentColor?: string;
+  bgGradient?: string;
+  glowColor?: string;
+  avatarBg?: string;
+  avatarColor?: string;
+  borderColor?: string;
 }
 
 export interface CompanyOverviewInfo {

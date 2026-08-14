@@ -100,6 +100,8 @@ export function Home({
             />
           ))}
           <button className="history-add" onClick={onNew}>
+            <span className="card-ambient-light" />
+            <span className="card-concentric-rings" />
             <span>
               <Plus size={20} />
             </span>
