@@ -126,6 +126,7 @@ function App() {
                 company={company}
                 isResearching={isResearching}
                 researchStep={researchStep}
+                onAnalyze={startAnalysis}
               />
             )}
             {reportReady && (

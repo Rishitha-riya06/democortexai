@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import { Check, Circle, Feather, Sparkles } from 'lucide-react';
+import { useState } from 'react';
+import { ArrowUpRight, Check, Circle, Feather, Search, Sparkles } from 'lucide-react';
 import { Company } from '../../types/company';
 import { mockResearchSteps } from '../../data/mockAnalysis';
 
@@ -8,6 +9,7 @@ export interface AnalysisProgressProps {
   isResearching: boolean;
   researchStep: number;
   steps?: string[];
+  onAnalyze: (value: string) => void;
 }
 
 export function AnalysisProgress({
@@ -15,7 +17,9 @@ export function AnalysisProgress({
   isResearching,
   researchStep,
   steps = mockResearchSteps,
+  onAnalyze,
 }: AnalysisProgressProps) {
+  const [query, setQuery] = useState('');
   const percentage = Math.round(((researchStep + 1) / steps.length) * 100);
 
   return (
@@ -59,8 +63,8 @@ export function AnalysisProgress({
                   index < researchStep
                     ? 'complete'
                     : index === researchStep
-                    ? 'active'
-                    : ''
+                      ? 'active'
+                      : ''
                 }
               >
                 <span className="research-icon">
@@ -77,8 +81,8 @@ export function AnalysisProgress({
                   {index < researchStep
                     ? 'Complete'
                     : index === researchStep
-                    ? 'In progress'
-                    : 'Queued'}
+                      ? 'In progress'
+                      : 'Queued'}
                 </span>
               </div>
             ))}
@@ -86,6 +90,25 @@ export function AnalysisProgress({
         </div>
       ) : (
         <div className="empty-company-prompt">
+          <form
+            className="company-search"
+            style={{ margin: '0 auto 24px' }}
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (query.trim()) onAnalyze(query.trim());
+            }}
+          >
+            <Search size={19} />
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Enter a company name or website..."
+              aria-label="Company name"
+            />
+            <button type="submit">
+              <ArrowUpRight size={18} />
+            </button>
+          </form>
           <p>
             Start with a name, website, or short description. CORTEX will map
             the business, market, signals, and competitive context.
