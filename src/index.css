@@ -230,6 +230,7 @@ input:focus-visible {
     border-radius: 50%;
     filter: blur(1px);
     pointer-events: none;
+    z-index: 0;
 }
 
 .orb-one {
@@ -239,6 +240,7 @@ input:focus-visible {
     right: 19%;
     background: radial-gradient(circle at 35% 30%, #d7caff, #eeeaff 52%, transparent 70%);
     opacity: .75;
+    animation: heroFloatA 9s ease-in-out infinite;
 }
 
 .orb-two {
@@ -248,29 +250,189 @@ input:focus-visible {
     left: 23%;
     background: #f0ebff;
     opacity: .9;
+    animation: heroFloatB 11s ease-in-out infinite;
+}
+
+/* ─── Hero keyframes ─────────────────────────────────────────── */
+@keyframes heroFloatA {
+    0%, 100% { transform: translateY(0) translateX(0); }
+    33%       { transform: translateY(-14px) translateX(6px); }
+    66%       { transform: translateY(8px) translateX(-5px); }
+}
+@keyframes heroFloatB {
+    0%, 100% { transform: translateY(0) translateX(0); }
+    40%       { transform: translateY(12px) translateX(-8px); }
+    75%       { transform: translateY(-7px) translateX(4px); }
+}
+@keyframes heroFloatC {
+    0%, 100% { transform: translateY(0) translateX(0) scale(1); }
+    50%       { transform: translateY(-20px) translateX(10px) scale(1.04); }
+}
+@keyframes heroFloatD {
+    0%, 100% { transform: translateY(0) scale(1); }
+    40%       { transform: translateY(16px) scale(1.06); }
+    72%       { transform: translateY(-10px) scale(.97); }
+}
+@keyframes heroSpinSlow {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
+/* ─── Floating decorative shapes ──────────────────────────────── */
+.hero-shape {
+    position: absolute;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ▸ Blob 1 — large, top-left corner, bleeds off edge */
+.hero-shape-blob-1 {
+    width: 300px;
+    height: 300px;
+    top: -80px;
+    left: -90px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 40%, #c4b5fd, #ddd6fe 48%, transparent 72%);
+    filter: blur(40px);
+    opacity: .14;
+    animation: heroFloatA 18s ease-in-out infinite;
+}
+
+/* ▸ Blob 2 — medium, bottom-right corner, bleeds off edge */
+.hero-shape-blob-2 {
+    width: 260px;
+    height: 220px;
+    bottom: -50px;
+    right: -70px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 55% 60%, #a78bfa, #c4b5fd 50%, transparent 75%);
+    filter: blur(36px);
+    opacity: .13;
+    animation: heroFloatC 22s ease-in-out infinite;
+    animation-delay: -8s;
+}
+
+/* ▸ Blob 3 — small, top-right area */
+.hero-shape-blob-3 {
+    width: 120px;
+    height: 120px;
+    top: 40px;
+    right: 6%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 50%, #ddd6fe, #ede9fe 55%, transparent 78%);
+    filter: blur(22px);
+    opacity: .18;
+    animation: heroFloatB 15s ease-in-out infinite;
+    animation-delay: -3s;
+}
+
+/* ▸ Blob 4 — small, bottom-left area */
+.hero-shape-blob-4 {
+    width: 100px;
+    height: 100px;
+    bottom: 60px;
+    left: 5%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 50%, #c4b5fd, #ede9fe 55%, transparent 80%);
+    filter: blur(20px);
+    opacity: .16;
+    animation: heroFloatD 17s ease-in-out infinite;
+    animation-delay: -5s;
+}
+
+/* ▸ Ring 1 — large, top-left edge, slow spin */
+.hero-shape-ring-1 {
+    width: 96px;
+    height: 96px;
+    top: 50px;
+    left: 4%;
+    border-radius: 50%;
+    border: 9px solid transparent;
+    background:
+        linear-gradient(#fff, #fff) padding-box,
+        linear-gradient(135deg, #a78bfa, #7c3aed, #c4b5fd) border-box;
+    opacity: .18;
+    animation: heroSpinSlow 28s linear infinite;
+}
+
+/* ▸ Ring 2 — medium, bottom-right edge */
+.hero-shape-ring-2 {
+    width: 58px;
+    height: 58px;
+    bottom: 70px;
+    right: 8%;
+    border-radius: 50%;
+    border: 7px solid transparent;
+    background:
+        linear-gradient(#fff, #fff) padding-box,
+        linear-gradient(200deg, #8b5cf6, #ddd6fe) border-box;
+    opacity: .22;
+    animation: heroFloatA 20s ease-in-out infinite;
+    animation-delay: -12s;
+}
+
+/* ▸ Ring 3 — small, top-right far edge, slow spin */
+.hero-shape-ring-3 {
+    width: 38px;
+    height: 38px;
+    top: 30%;
+    right: 3%;
+    border-radius: 50%;
+    border: 5px solid transparent;
+    background:
+        linear-gradient(#fff, #fff) padding-box,
+        linear-gradient(45deg, #c4b5fd, #7c3aed) border-box;
+    opacity: .20;
+    animation: heroSpinSlow 22s linear infinite;
+    animation-delay: -6s;
 }
 
 .company-search,
 .chat-input {
     display: flex;
     position: relative;
-    z-index: 1;
+    z-index: 2;
     width: min(565px, 100%);
     height: 64px;
     align-items: center;
     gap: 14px;
-    background: #fff;
-    border: 1px solid #e5e3df;
-    border-radius: 19px;
-    padding: 7px 8px 7px 20px;
-    box-shadow: 0 12px 34px rgba(40, 30, 60, .045);
-    transition: border-color .25s, box-shadow .25s;
+    background: rgba(255, 255, 255, .96);
+    border: 1px solid rgba(229, 227, 223, .8);
+    border-radius: 9999px;
+    padding: 7px 8px 7px 24px;
+    /* Floating card: layered ambient + directional shadows */
+    box-shadow:
+        0 2px 4px rgba(109, 74, 255, .04),
+        0 8px 20px rgba(40, 30, 60, .07),
+        0 20px 48px rgba(40, 30, 60, .055),
+        0 0 0 1px rgba(255, 255, 255, .9) inset;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition:
+        border-color .28s ease,
+        box-shadow .28s ease,
+        transform .28s ease;
+}
+
+.company-search:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 2px 4px rgba(109, 74, 255, .05),
+        0 12px 28px rgba(40, 30, 60, .09),
+        0 28px 56px rgba(40, 30, 60, .07),
+        0 0 0 1px rgba(255, 255, 255, .9) inset;
 }
 
 .company-search:focus-within,
 .chat-input:focus-within {
     border-color: #b9a7ff;
-    box-shadow: 0 15px 36px rgba(109, 74, 255, .1);
+    transform: translateY(-2px) scale(1.012);
+    box-shadow:
+        0 2px 6px rgba(109, 74, 255, .1),
+        0 14px 34px rgba(109, 74, 255, .12),
+        0 32px 60px rgba(40, 30, 60, .07),
+        0 0 0 3px rgba(167, 139, 250, .18),
+        0 0 0 1px rgba(255, 255, 255, .9) inset;
 }
 
 .company-search svg,
@@ -302,16 +464,19 @@ input:focus-visible {
     display: grid;
     place-items: center;
     border: 0;
-    border-radius: 14px;
-    background: #6d4aff;
+    border-radius: 9999px;
+    background: linear-gradient(135deg, #7c5cfc, #6d4aff 50%, #5735e5);
     color: #fff;
-    transition: transform .2s, background .2s;
+    box-shadow: 0 4px 14px rgba(109, 74, 255, .38);
+    transition: transform .22s ease, background .22s ease, box-shadow .22s ease;
+    flex-shrink: 0;
 }
 
 .company-search button:hover,
 .chat-input button:hover {
-    transform: translateY(-2px);
-    background: #5735e5;
+    transform: translateY(-2px) scale(1.06);
+    background: linear-gradient(135deg, #8b6dfd, #5f40e8);
+    box-shadow: 0 6px 20px rgba(109, 74, 255, .5);
 }
 
 .example-row {
@@ -328,17 +493,23 @@ input:focus-visible {
 
 .example-row button {
     color: #73717a;
-    background: transparent;
+    background: rgba(255, 255, 255, .7);
     border: 1px solid #e5e3df;
     border-radius: 99px;
     padding: 6px 10px;
     font-size: 10px;
-    transition: .2s;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 2px 6px rgba(40, 30, 60, .055);
+    transition: color .2s, border-color .2s, box-shadow .2s, transform .2s;
 }
 
 .example-row button:hover {
-    border-color: #6d4aff;
+    border-color: #a78bfa;
     color: #6d4aff;
+    background: rgba(237, 233, 254, .6);
+    box-shadow: 0 4px 14px rgba(109, 74, 255, .14);
+    transform: translateY(-2px);
 }
 
 .history-section {

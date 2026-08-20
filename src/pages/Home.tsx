@@ -29,8 +29,19 @@ export function Home({
       exit={{ opacity: 0 }}
     >
       <section className="hero-section">
+        {/* Existing ambient orbs */}
         <div className="orb orb-one" />
         <div className="orb orb-two" />
+
+        {/* Decorative floating shapes — edges/corners only */}
+        <div className="hero-shape hero-shape-blob-1" aria-hidden="true" />
+        <div className="hero-shape hero-shape-blob-2" aria-hidden="true" />
+        <div className="hero-shape hero-shape-blob-3" aria-hidden="true" />
+        <div className="hero-shape hero-shape-blob-4" aria-hidden="true" />
+        <div className="hero-shape hero-shape-ring-1" aria-hidden="true" />
+        <div className="hero-shape hero-shape-ring-2" aria-hidden="true" />
+        <div className="hero-shape hero-shape-ring-3" aria-hidden="true" />
+
         <div className="eyebrow">
           <span className="eyebrow-line" /> Company intelligence, reimagined
         </div>
