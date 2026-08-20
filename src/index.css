@@ -216,6 +216,19 @@ input:focus-visible {
     font-style: normal;
 }
 
+.hero-section {
+    --glow-x: 50%;
+    --glow-y: 40%;
+}
+
+.cursor-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(320px circle at var(--glow-x) var(--glow-y), rgba(167, 139, 250, .10), transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+
 .hero-copy {
     position: relative;
     z-index: 1;
@@ -255,27 +268,87 @@ input:focus-visible {
 
 /* ─── Hero keyframes ─────────────────────────────────────────── */
 @keyframes heroFloatA {
-    0%, 100% { transform: translateY(0) translateX(0); }
-    33%       { transform: translateY(-14px) translateX(6px); }
-    66%       { transform: translateY(8px) translateX(-5px); }
+
+    0%,
+    100% {
+        transform: translateY(0) translateX(0);
+    }
+
+    33% {
+        transform: translateY(-14px) translateX(6px);
+    }
+
+    66% {
+        transform: translateY(8px) translateX(-5px);
+    }
 }
+
 @keyframes heroFloatB {
-    0%, 100% { transform: translateY(0) translateX(0); }
-    40%       { transform: translateY(12px) translateX(-8px); }
-    75%       { transform: translateY(-7px) translateX(4px); }
+
+    0%,
+    100% {
+        transform: translateY(0) translateX(0);
+    }
+
+    40% {
+        transform: translateY(12px) translateX(-8px);
+    }
+
+    75% {
+        transform: translateY(-7px) translateX(4px);
+    }
 }
+
 @keyframes heroFloatC {
-    0%, 100% { transform: translateY(0) translateX(0) scale(1); }
-    50%       { transform: translateY(-20px) translateX(10px) scale(1.04); }
+
+    0%,
+    100% {
+        transform: translateY(0) translateX(0) scale(1);
+    }
+
+    50% {
+        transform: translateY(-20px) translateX(10px) scale(1.04);
+    }
 }
+
 @keyframes heroFloatD {
-    0%, 100% { transform: translateY(0) scale(1); }
-    40%       { transform: translateY(16px) scale(1.06); }
-    72%       { transform: translateY(-10px) scale(.97); }
+
+    0%,
+    100% {
+        transform: translateY(0) scale(1);
+    }
+
+    40% {
+        transform: translateY(16px) scale(1.06);
+    }
+
+    72% {
+        transform: translateY(-10px) scale(.97);
+    }
 }
+
 @keyframes heroSpinSlow {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(360deg); }
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes heroFloatSpin {
+    0% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+
+    50% {
+        transform: translate(6px, -8px) rotate(180deg);
+    }
+
+    100% {
+        transform: translate(0, 0) rotate(360deg);
+    }
 }
 
 /* ─── Floating decorative shapes ──────────────────────────────── */
@@ -352,7 +425,7 @@ input:focus-visible {
         linear-gradient(#fff, #fff) padding-box,
         linear-gradient(135deg, #a78bfa, #7c3aed, #c4b5fd) border-box;
     opacity: .18;
-    animation: heroSpinSlow 28s linear infinite;
+    animation: heroFloatSpin 3s linear infinite;
 }
 
 /* ▸ Ring 2 — medium, bottom-right edge */
@@ -383,8 +456,19 @@ input:focus-visible {
         linear-gradient(#fff, #fff) padding-box,
         linear-gradient(45deg, #c4b5fd, #7c3aed) border-box;
     opacity: .20;
-    animation: heroSpinSlow 22s linear infinite;
+    animation: heroFloatSpin 22s linear infinite;
     animation-delay: -6s;
+}
+
+.hero-section::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: .035;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+    z-index: 0;
 }
 
 .company-search,
@@ -595,14 +679,14 @@ input:focus-visible {
     height: 280px;
     pointer-events: none;
     border-radius: 50%;
-    background: radial-gradient(circle, 
-        rgba(255, 255, 255, 0.15) 0%, 
-        rgba(255, 255, 255, 0.15) 36%, 
-        rgba(255, 255, 255, 0.09) 37%, 
-        rgba(255, 255, 255, 0.09) 62%, 
-        rgba(255, 255, 255, 0.04) 63%, 
-        rgba(255, 255, 255, 0.04) 86%, 
-        transparent 87%);
+    background: radial-gradient(circle,
+            rgba(255, 255, 255, 0.15) 0%,
+            rgba(255, 255, 255, 0.15) 36%,
+            rgba(255, 255, 255, 0.09) 37%,
+            rgba(255, 255, 255, 0.09) 62%,
+            rgba(255, 255, 255, 0.04) 63%,
+            rgba(255, 255, 255, 0.04) 86%,
+            transparent 87%);
     z-index: 0;
     transition: transform .45s ease;
 }
@@ -840,6 +924,7 @@ input:focus-visible {
     .history-grid {
         grid-template-columns: repeat(2, 1fr);
     }
+
     .history-add {
         grid-column: 1;
         grid-row: auto;
@@ -851,6 +936,7 @@ input:focus-visible {
     .history-grid {
         grid-template-columns: 1fr;
     }
+
     .history-add {
         grid-column: 1;
         grid-row: auto;

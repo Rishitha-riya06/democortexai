@@ -3,6 +3,7 @@ import { ArrowUpRight, Plus, Search } from 'lucide-react';
 import { HistoryItem } from '../types/company';
 import { mockExampleCompanies, mockHistory } from '../data/mockCompanies';
 import { RecentAnalysisCard } from '../components/dashboard/RecentAnalysisCard';
+import { useRef } from 'react';
 
 export interface HomeProps {
   input: string;
@@ -21,6 +22,14 @@ export function Home({
   onNew,
   historyList = mockHistory,
 }: HomeProps) {
+  const heroRef = useRef<HTMLElement>(null);
+  function handleHeroMouseMove(e: React.MouseEvent<HTMLElement>) {
+    const rect = heroRef.current?.getBoundingClientRect();
+    if (!rect || !heroRef.current) return;
+    heroRef.current.style.setProperty('--glow-x', `${((e.clientX - rect.left) / rect.width) * 100}%`);
+    heroRef.current.style.setProperty('--glow-y', `${((e.clientY - rect.top) / rect.height) * 100}%`);
+  }
+
   return (
     <motion.main
       className="landing-page"
@@ -28,10 +37,11 @@ export function Home({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <section className="hero-section">
+      <section className="hero-section" ref={heroRef} onMouseMove={handleHeroMouseMove}>
         {/* Existing ambient orbs */}
         <div className="orb orb-one" />
         <div className="orb orb-two" />
+        <div className="cursor-glow" aria-hidden="true" />
 
         {/* Decorative floating shapes — edges/corners only */}
         <div className="hero-shape hero-shape-blob-1" aria-hidden="true" />
