@@ -156,6 +156,11 @@ input:focus-visible {
     text-align: center;
     position: relative;
     border-top: 1px solid #e9e7e2;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    padding-left: 44px;
+    padding-right: 44px;
 }
 
 .hero-section:before {
