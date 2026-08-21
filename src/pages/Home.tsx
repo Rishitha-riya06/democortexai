@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ArrowUpRight, Plus, Search } from 'lucide-react';
+import { ArrowUpRight, Search } from 'lucide-react';
 import { HistoryItem } from '../types/company';
 import { mockExampleCompanies, mockHistory } from '../data/mockCompanies';
 import { RecentAnalysisCard } from '../components/dashboard/RecentAnalysisCard';
@@ -120,23 +120,7 @@ export function Home({
               onClick={() => onHistory(item)}
             />
           ))}
-          <button className="history-add" onClick={onNew}>
-            <span className="card-ambient-light" />
-            <span className="card-concentric-rings" />
-            <div className="card-top">
-              <span className="company-avatar">
-                <Plus size={18} />
-              </span>
-            </div>
-            <div className="history-add-bottom">
-              <strong>
-                New company
-                <br />
-                analysis
-              </strong>
-              <ArrowUpRight size={18} />
-            </div>
-          </button>
+
         </div>
       </section>
 
