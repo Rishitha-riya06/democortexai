@@ -151,7 +151,7 @@ function App() {
           />
         )}
       </AnimatePresence>
-    </div>
+    </div >
   );
 }
 
