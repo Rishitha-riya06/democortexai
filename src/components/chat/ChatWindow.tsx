@@ -33,7 +33,7 @@ export function ChatWindow({
     <section className="chat-conversation-section">
       <div className="chat-section-header">
         <div className="reference-kicker">
-          <Sparkles size={13} /> 08 / Interactive Intelligence
+          <Sparkles size={13} /> 10 / Interactive Intelligence
         </div>
         <h2>Ask CORTEX about {company}</h2>
         <p className="chat-section-subtitle">
