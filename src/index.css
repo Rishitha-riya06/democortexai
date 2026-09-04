@@ -31,6 +31,8 @@
     --outline: rgba(20, 21, 30, .22);
     --chip: #f5f5f2;
     --chip-ink: #14151c;
+    --plan-card: #eef0f3;
+    --plan-edge: rgba(20, 21, 30, .06);
 }
 
 * {
@@ -60,32 +62,215 @@ input:focus-visible {
 
 .app-shell {
     min-height: 100vh;
-    overflow: hidden;
+    overflow-x: clip;
+    position: relative;
 }
 
+/* ─── Aurora atmosphere ───────────────────────────────────────────
+   Starts at the very top of the document — behind the nav, not below
+   it — so there is no darker band above the hero. Layered soft radial
+   blooms over the charcoal base give the dark half of the page its
+   depth instead of one flat teal fill. Fades out with --hero-veil as
+   the page flips to light. */
+.app-atmosphere {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2400px;
+    z-index: 0;
+    pointer-events: none;
+    opacity: var(--hero-veil);
+    /* Every layer is translucent and resolves to fully transparent long
+       before the element's bottom edge, so the green simply dissolves into
+       the page canvas — there is no opaque bottom to cut a line across the
+       page when the theme starts flipping. */
+    background-image:
+        radial-gradient(76% 40% at 4% 5%, rgba(42, 156, 122, .82) 0%, rgba(18, 92, 78, .30) 46%, rgba(26, 29, 38, 0) 72%),
+        radial-gradient(68% 36% at 47% -2%, rgba(30, 132, 106, .68) 0%, rgba(26, 29, 38, 0) 68%),
+        radial-gradient(50% 28% at 99% 3%, rgba(18, 104, 86, .46) 0%, rgba(26, 29, 38, 0) 66%),
+        radial-gradient(60% 26% at 18% 22%, rgba(20, 108, 88, .34) 0%, rgba(26, 29, 38, 0) 68%),
+        linear-gradient(180deg,
+            rgba(23, 118, 95, .96) 0%,
+            rgba(19, 100, 82, .88) 7%,
+            rgba(16, 80, 68, .74) 13%,
+            rgba(14, 62, 55, .56) 19%,
+            rgba(12, 46, 43, .38) 25%,
+            rgba(14, 30, 34, .22) 31%,
+            rgba(22, 26, 34, .10) 37%,
+            rgba(26, 29, 38, 0) 44%);
+}
+
+/* The shell keeps a constant 84px of flow height whether the bar is
+   expanded or docked, so nothing below it shifts when it collapses. */
+/* The shell keeps a constant 84px of flow height whether the bar is
+   expanded or docked, so nothing below it shifts when it collapses. It
+   also centres the inner bar, which gives the docked pill its inset from
+   the top without animating `top` on a sticky element. */
 .top-nav {
-    height: 80px;
+    height: 84px;
+    position: sticky;
+    top: 0;
+    z-index: 60;
+    display: flex;
+    align-items: center;
+}
+
+/* The collapse is driven by max-width. Unlike width:auto / max-content, a
+   max-width interpolates — so the bar genuinely contracts, and because the
+   items live inside it they slide inward with it instead of jumping to
+   new positions. That is what makes it read as one motion. */
+.top-nav-inner {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    height: 84px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    max-width: 1360px;
-    margin: 0 auto;
-    padding: 0 44px;
-    position: relative;
-    z-index: 5;
+    gap: 24px;
+    padding: 0 40px;
+    border-radius: 15px;
+    background-color: rgba(255, 255, 255, 0);
+    box-shadow: 0 10px 34px rgba(12, 16, 22, 0);
+    transition:
+        max-width .58s cubic-bezier(.32, .72, 0, 1),
+        height .52s cubic-bezier(.32, .72, 0, 1),
+        padding .52s cubic-bezier(.32, .72, 0, 1),
+        gap .52s cubic-bezier(.32, .72, 0, 1),
+        background-color .38s ease,
+        box-shadow .5s ease;
 }
 
+/* ─── Docked: a floating white pill, pinned for the rest of the page ── */
+.top-nav.is-docked .top-nav-inner {
+    max-width: 792px;
+    height: 62px;
+    gap: 30px;
+    padding: 0 10px;
+    background-color: #ffffff;
+    box-shadow: 0 10px 34px rgba(12, 16, 22, .17);
+}
+
+/* Brand slot: one box that narrows from wordmark width to tile width,
+   with the two marks cross-fading inside it. */
+.nav-brand {
+    position: relative;
+    flex-shrink: 0;
+    width: 148px;
+    height: 44px;
+    transition: width .58s cubic-bezier(.32, .72, 0, 1);
+}
+
+.top-nav.is-docked .nav-brand {
+    width: 44px;
+}
+
+.nav-brand .wordmark,
+.nav-brand .wm-tile {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%) skewX(-10deg);
+    transition: opacity .34s ease;
+}
+
+.nav-brand .wm-tile {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.top-nav.is-docked .nav-brand .wordmark {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.top-nav.is-docked .nav-brand .wm-tile {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.wm-tile {
+    display: grid;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    place-items: center;
+    border: 0;
+    border-radius: 10px;
+    background: #d3fb52;
+    color: #14151c;
+    font-family: 'Anton', sans-serif;
+    font-size: 24px;
+    line-height: 1;
+    padding-bottom: 2px;
+    cursor: pointer;
+}
+
+.top-nav.is-docked .nav-links {
+    flex: 1;
+    gap: 30px;
+}
+
+.top-nav.is-docked .nav-links button {
+    color: #14151c;
+    font-size: 15px;
+}
+
+.top-nav.is-docked .nav-pill-ghost {
+    color: #14151c;
+    border-color: rgba(20, 21, 30, .3);
+}
+
+.top-nav.is-docked .nav-pill-ghost:hover {
+    background: rgba(20, 21, 30, .05);
+}
+
+.top-nav.is-docked .nav-pill-lime {
+    background: #252a34;
+    color: #ffffff;
+}
+
+.top-nav.is-docked .nav-pill-lime:hover {
+    background: #14151c;
+}
+
+/* ─── 7thSense wordmark lockup ────────────────────────────────────
+   Heavy oblique display face, the "th" riding high off the 7, with
+   "sense" set tight against it — the mark in lime, on both themes. */
 .wordmark {
-    display: flex;
-    align-items: center;
-    gap: 7px;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0;
     border: 0;
     background: transparent;
-    color: var(--page-ink);
-    font-size: 14px;
-    font-weight: 800;
-    letter-spacing: .16em;
     padding: 0;
+    color: var(--page-accent);
+    font-family: 'Anton', 'Archivo Black', sans-serif;
+    font-weight: 400;
+    letter-spacing: -.005em;
+    line-height: 1;
+    transform: skewX(-10deg);
+}
+
+.wm-seven {
+    font-size: 25px;
+    display: inline-flex;
+    align-items: flex-start;
+}
+
+.wm-seven sup {
+    font-size: .40em;
+    line-height: 1;
+    margin: 2px 0 0 1px;
+    top: 0;
+    vertical-align: top;
+}
+
+.wm-sense {
+    font-size: 25px;
+    margin-left: 1px;
+    text-transform: lowercase;
 }
 
 .wordmark-mark {
@@ -103,27 +288,74 @@ input:focus-visible {
 .nav-links {
     display: flex;
     gap: 29px;
-    margin-left: 110px;
+    flex: 1;
+    justify-content: center;
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nav-pill {
+    border-radius: 9px;
+    padding: 12px 21px;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -.01em;
+    line-height: 1.15;
+    border: 1.5px solid transparent;
+    cursor: pointer;
+    transition: background .18s ease, color .18s ease, border-color .18s ease;
+    white-space: nowrap;
+}
+
+.nav-pill-ghost {
+    background: transparent;
+    color: var(--page-ink);
+    border-color: var(--outline);
+}
+
+.nav-pill-ghost:hover {
+    background: var(--panel-hover);
+}
+
+.nav-pill-lime {
+    background: #d3fb52;
+    color: #14151c;
+}
+
+.nav-pill-lime:hover {
+    background: #e2ff7d;
 }
 
 .nav-links button,
 .back-button {
     border: 0;
     background: transparent;
-    color: var(--page-ink-muted);
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: .03em;
-    text-transform: uppercase;
-    padding: 7px 14px;
+    color: var(--page-ink);
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: -.01em;
+    padding: 7px 8px;
     border-radius: 99px;
-    transition: color .2s, background .2s;
+    transition: color .2s, opacity .2s;
 }
 
 .nav-links button:hover,
 .back-button:hover {
-    color: #252630;
-    background: #f2f1ec;
+    opacity: .72;
+    background: transparent;
+}
+
+.top-nav-inner .nav-links {
+    gap: 40px;
+}
+
+/* every nav item reads at the same weight in the reference */
+.top-nav-inner .muted-nav {
+    opacity: 1;
 }
 
 .muted-nav {
@@ -133,7 +365,7 @@ input:focus-visible {
 .menu-button {
     width: 36px;
     height: 36px;
-    display: grid;
+    display: none;
     place-items: center;
     border: 1px solid rgba(20, 21, 30, 0.12);
     border-radius: 50%;
@@ -247,7 +479,6 @@ input:focus-visible {
     letter-spacing: -.075em;
     font-weight: 700;
     margin: 21px 0 22px;
-    text-shadow: 0 4px 24px rgba(0, 0, 0, 0.35), 0 1px 2px rgba(0, 0, 0, 0.25);
 }
 
 .hero-section h1 em,
@@ -928,16 +1159,16 @@ input:focus-visible {
     justify-content: space-between;
     align-items: stretch;
     padding: 12px 18px;
-    background: linear-gradient(145deg, #ff6b5c 0%, #e8342a 55%, #6e0f09 100%);
+    background: linear-gradient(145deg, #4fd48c 0%, #1f9d63 55%, #0c5340 100%);
     color: #ffffff;
     border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 12px 32px rgba(232, 52, 42, 0.4);
+    box-shadow: 0 12px 32px rgba(31, 157, 99, 0.4);
     cursor: pointer;
 }
 
 .history-add:hover {
     border-color: rgba(255, 255, 255, 0.45);
-    box-shadow: 0 20px 45px rgba(232, 52, 42, 0.55);
+    box-shadow: 0 20px 45px rgba(31, 157, 99, 0.55);
 }
 
 .history-add .card-top {
@@ -1078,10 +1309,9 @@ input:focus-visible {
 }
 
 .research-view {
-    min-height: 720px;
     max-width: 850px;
     margin: 0 auto;
-    padding: 120px 0 80px;
+    padding: 72px 0 56px;
     text-align: center;
 }
 
@@ -3464,6 +3694,8 @@ input:focus-visible {
     font-family: 'Inter', 'Manrope', sans-serif;
     color: var(--page-ink);
     overflow-x: hidden;
+    position: relative;
+    z-index: 1;
 }
 
 .lp-wrap {
@@ -3524,17 +3756,6 @@ input:focus-visible {
     z-index: 0;
     padding: 66px 0 0;
     text-align: center;
-}
-
-.lp-hero-veil {
-    position: absolute;
-    inset: -90px 0 0 0;
-    z-index: -1;
-    pointer-events: none;
-    opacity: var(--hero-veil);
-    background-image:
-        radial-gradient(120% 90% at 50% 0%, #17836c 0%, #12604f 38%, rgba(26, 29, 38, 0) 78%),
-        linear-gradient(180deg, #135f52 0%, #14403c 46%, rgba(26, 29, 38, 0) 88%);
 }
 
 .lp-pill {
@@ -3943,62 +4164,81 @@ input:focus-visible {
 }
 
 .lp-plan {
-    background: var(--panel);
-    border: 1px solid var(--hairline);
-    border-radius: 18px;
-    padding: 38px 34px 40px;
+    background: var(--plan-card);
+    border: 1px solid var(--plan-edge);
+    border-radius: 15px;
+    padding: 40px 40px 42px;
     display: flex;
     flex-direction: column;
 }
 
+.lp-plan-tier {
+    font-size: 19px;
+    font-weight: 400;
+    letter-spacing: -.015em;
+    color: var(--page-ink);
+    margin-bottom: 26px;
+}
+
 .lp-plan h3 {
-    font-size: 25px;
+    font-size: clamp(30px, 2.9vw, 41px);
     font-weight: 500;
-    letter-spacing: -.025em;
-    margin: 0 0 14px;
+    line-height: 1.08;
+    letter-spacing: -.035em;
+    margin: 0 0 22px;
     color: var(--page-ink);
 }
 
 .lp-plan p {
-    font-size: 15px;
-    line-height: 1.55;
-    color: var(--page-ink-muted);
-    margin: 0 0 26px;
+    font-size: 17px;
+    line-height: 1.45;
+    color: var(--page-ink);
+    margin: 0 0 40px;
 }
 
 .lp-plan ul {
     list-style: none;
     padding: 0;
-    margin: 0 0 30px;
+    margin: 0 0 40px;
     display: grid;
-    gap: 11px;
+    gap: 22px;
 }
 
 .lp-plan li {
-    font-size: 14px;
-    line-height: 1.45;
+    font-size: 17px;
+    line-height: 1.4;
     color: var(--page-ink);
     display: flex;
-    gap: 10px;
+    gap: 13px;
+    align-items: flex-start;
 }
 
-.lp-plan li::before {
-    content: '';
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #7fb320;
-    margin-top: 7px;
+.lp-check {
     flex-shrink: 0;
+    width: 19px;
+    height: 19px;
+    margin-top: 2px;
+    color: #14867a;
 }
 
-.lp-page-dark .lp-plan li::before {
-    background: #d3fb52;
-}
-
-.lp-plan .lp-btn {
+.lp-plan-cta {
     margin-top: auto;
-    align-self: flex-start;
+    width: 100%;
+    border: 0;
+    border-radius: 8px;
+    padding: 19px 20px;
+    background: #252a34;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -.015em;
+    cursor: pointer;
+    transition: background .18s ease;
+}
+
+.lp-plan-cta:hover {
+    background: #14151c;
 }
 
 /* ─── Teal metric cards ──────────────────────────────────────────── */
@@ -4008,14 +4248,39 @@ input:focus-visible {
     gap: 22px;
 }
 
+/* Mesh gradient in the reference's palette: a chartreuse bloom melting
+   through emerald into cyan, with a deep teal corner holding it down.
+   Each of the three cards is lit from a different point so the row reads
+   as one family rather than three copies. */
 .lp-metric {
     border-radius: 18px;
     padding: 36px 32px 40px;
-    background: linear-gradient(135deg, #1c8f74 0%, #14705d 52%, #0f4f47 100%);
     color: #ffffff;
     min-height: 236px;
     display: flex;
     flex-direction: column;
+    background-color: #0d3b45;
+    background-image:
+        radial-gradient(58% 62% at 20% 26%, rgba(184, 227, 86, .78) 0%, rgba(184, 227, 86, 0) 62%),
+        radial-gradient(72% 74% at 40% 58%, rgba(47, 181, 106, .82) 0%, rgba(47, 181, 106, 0) 68%),
+        radial-gradient(86% 84% at 92% 26%, rgba(26, 178, 178, .80) 0%, rgba(26, 178, 178, 0) 70%),
+        radial-gradient(72% 76% at 100% 104%, rgba(9, 42, 56, .92) 0%, rgba(9, 42, 56, 0) 66%);
+}
+
+.lp-metric:nth-child(2) {
+    background-image:
+        radial-gradient(56% 60% at 34% 46%, rgba(176, 224, 92, .70) 0%, rgba(176, 224, 92, 0) 60%),
+        radial-gradient(78% 78% at 16% 78%, rgba(40, 176, 118, .72) 0%, rgba(40, 176, 118, 0) 66%),
+        radial-gradient(96% 90% at 84% 16%, rgba(24, 186, 190, .88) 0%, rgba(24, 186, 190, 0) 72%),
+        radial-gradient(70% 74% at 104% 96%, rgba(10, 46, 60, .88) 0%, rgba(10, 46, 60, 0) 64%);
+}
+
+.lp-metric:nth-child(3) {
+    background-image:
+        radial-gradient(54% 56% at 24% 74%, rgba(166, 219, 92, .60) 0%, rgba(166, 219, 92, 0) 60%),
+        radial-gradient(70% 70% at 8% 40%, rgba(30, 172, 160, .70) 0%, rgba(30, 172, 160, 0) 66%),
+        radial-gradient(74% 72% at 62% 12%, rgba(32, 158, 148, .62) 0%, rgba(32, 158, 148, 0) 68%),
+        radial-gradient(90% 92% at 104% 78%, rgba(9, 38, 52, .95) 0%, rgba(9, 38, 52, 0) 68%);
 }
 
 .lp-metric b {
@@ -4067,7 +4332,12 @@ input:focus-visible {
 /* ─── Closing CTA ────────────────────────────────────────────────── */
 .lp-cta {
     border-radius: 22px;
-    background: linear-gradient(135deg, #1c8f74 0%, #14705d 55%, #0f4f47 100%);
+    background-color: #0d3b45;
+    background-image:
+        radial-gradient(42% 78% at 12% 8%, rgba(190, 232, 92, .74) 0%, rgba(190, 232, 92, 0) 62%),
+        radial-gradient(56% 96% at 30% 62%, rgba(48, 186, 112, .78) 0%, rgba(48, 186, 112, 0) 66%),
+        radial-gradient(70% 110% at 62% 30%, rgba(26, 184, 182, .82) 0%, rgba(26, 184, 182, 0) 70%),
+        radial-gradient(64% 108% at 100% 100%, rgba(8, 40, 54, .95) 0%, rgba(8, 40, 54, 0) 68%);
     padding: 92px 40px 96px;
     text-align: center;
     margin-bottom: 130px;
@@ -4195,30 +4465,56 @@ input:focus-visible {
     font-weight: 400;
 }
 
-.lp-foot-col a {
+.lp-foot-col a,
+.lp-foot-col button {
     display: block;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    font: inherit;
+    text-align: left;
     font-size: 14.5px;
     color: var(--page-ink);
     text-decoration: none;
     margin-bottom: 11px;
     opacity: .85;
+    cursor: pointer;
 }
 
-.lp-foot-col a:hover {
+.lp-foot-col a:hover,
+.lp-foot-col button:hover {
     opacity: 1;
     text-decoration: underline;
 }
 
+/* Full-bleed footer wordmark: the SVG stretches its own text to the
+   viewBox width, and the box runs the full window width, so the lockup
+   is justified edge to edge whatever the screen size. */
 .lp-wordmark {
-    font-family: 'Anton', sans-serif;
-    font-weight: 400;
-    font-size: clamp(64px, 14.5vw, 220px);
-    line-height: .82;
-    letter-spacing: -.02em;
-    color: #d3fb52;
-    text-align: center;
-    padding: 20px 0 26px;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    padding: 24px 30px 4px;
     user-select: none;
+}
+
+.lp-wordmark-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+    fill: #d3fb52;
+    transform: skewX(-10deg);
+}
+
+.lp-wordmark-tag {
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(12px, 1.5vw, 21px);
+    font-weight: 500;
+    letter-spacing: .30em;
+    color: #d3fb52;
+    padding-bottom: 34px;
 }
 
 .lp-foot-fine {
@@ -4284,4 +4580,15 @@ input:focus-visible {
 
 .lp-page .history-grid {
     max-width: none;
+}
+
+@media (max-width: 900px) {
+    .top-nav-inner .nav-links,
+    .top-nav-inner .nav-pill {
+        display: none;
+    }
+
+    .menu-button {
+        display: grid;
+    }
 }

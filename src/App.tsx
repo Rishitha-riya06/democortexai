@@ -96,6 +96,9 @@ function App() {
 
   return (
     <div className="app-shell">
+      {/* Landing only — it is 2400px tall, and on the short screens it was
+          stretching the document's scroll height into blank space. */}
+      {screen === 'landing' && <div className="app-atmosphere" aria-hidden="true" />}
       <Topbar screen={screen} onHome={() => setScreen('landing')} onNew={openBlank} />
       <AnimatePresence mode="wait">
         {screen === 'landing' && (

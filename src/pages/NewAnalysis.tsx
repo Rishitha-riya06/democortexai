@@ -58,7 +58,7 @@ export function NewAnalysis({ onStartAnalysis }: NewAnalysisProps) {
 
         <div className="empty-company-prompt" style={{ marginTop: '32px' }}>
           <p>
-            Start with a name, website, or short description. CORTEX will map
+            Start with a name, website, or short description. 7thSense will map
             the business, market, signals, and competitive context.
           </p>
           <div className="prompt-hint">

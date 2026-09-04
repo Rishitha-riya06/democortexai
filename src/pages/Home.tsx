@@ -14,6 +14,7 @@ export interface HomeProps {
   historyList?: HistoryItem[];
 }
 
+// Example analysis targets — companies you can point 7thSense at.
 const MARQUEE = [
   'OpenAI',
   'Microsoft',
@@ -27,66 +28,114 @@ const MARQUEE = [
 
 const CAPABILITIES = [
   {
-    index: '01 / Profile',
+    index: '01 / Company Profile',
     title: 'Understand who they actually are',
-    copy: 'Cortex assembles a company profile from public filings, job posts, product pages and press — the picture a good analyst would build, in about two minutes.',
+    copy: 'Ten questions that establish the basics before anything else: what the company does in its own words, how it makes money, and who runs it.',
     points: [
-      'Business model and revenue lines',
-      'Headcount shape and hiring direction',
-      'Leadership, ownership and funding history',
+      'What the company does, and how it describes itself',
+      'Business model, products and services',
+      'Leadership, headquarters and markets served',
     ],
     mock: [
       ['Business model', 'B2B SaaS'],
-      ['Headcount', '2,480'],
-      ['Hiring trend', '+18% QoQ'],
+      ['Industry', 'Enterprise software'],
+      ['Headquarters', 'San Jose, CA'],
     ],
-    bar: 78,
+    bar: 82,
   },
   {
-    index: '02 / Compete',
+    index: '02 / Market & Competitors',
     title: 'See the whole competitive set',
-    copy: 'Every company is scored against the rivals that actually matter, so you walk in knowing where they win, where they leak, and what they are worried about.',
+    copy: 'Eight questions that place the company in its market — who it is really up against, what separates it from them, and which way the industry is moving.',
     points: [
-      'Side-by-side digital benchmarks',
-      'Share of voice across channels',
-      'Gaps ranked by how winnable they are',
+      'Who the key competitors actually are',
+      'Market positioning and what differentiates them',
+      'Segments, partnerships and target industries',
     ],
     mock: [
-      ['Digital score', '72 / 100'],
-      ['Closest rival', 'within 4 pts'],
-      ['Biggest gap', 'Paid search'],
+      ['Key competitors', '6 identified'],
+      ['Positioning', 'Premium / enterprise'],
+      ['Segments served', '4'],
     ],
-    bar: 62,
+    bar: 64,
   },
   {
-    index: '03 / Signal',
-    title: 'Catch the moment worth acting on',
-    copy: 'Launches, leadership changes, pricing moves and hiring spikes surface as signals with a date attached — so outreach lands while it is still relevant.',
+    index: '03 / Digital Presence',
+    title: 'Measure every channel they run',
+    copy: 'The deepest dimension at thirty-six metrics: LinkedIn, Instagram, website and SEO, video, and paid advertising — then benchmarked side by side against the competitive set.',
     points: [
-      'Product and pricing changes',
-      'Executive and org movement',
-      'Campaign and channel shifts',
+      'LinkedIn, Instagram and YouTube reach and engagement',
+      'Site performance, indexing, backlinks and publishing cadence',
+      'Live ad activity, creative themes and landing pages',
     ],
     mock: [
-      ['New signals', '6 this week'],
-      ['Top signal', 'VP Sales hire'],
-      ['Detected', '3 days ago'],
+      ['LinkedIn followers', '128K'],
+      ['Digital Presence Score', '72 / 100'],
+      ['Biggest channel gap', 'Paid search'],
+    ],
+    bar: 72,
+  },
+  {
+    index: '04 / Technology Stack',
+    title: 'Know what they are built on',
+    copy: 'Ten questions on the engineering surface — frameworks, CMS, hosting and tooling — read straight off what the company already exposes publicly.',
+    points: [
+      'Frameworks, CMS and JavaScript libraries',
+      'Cloud provider, hosting and CDN',
+      'Analytics, security headers and public APIs',
+    ],
+    mock: [
+      ['CMS', 'Contentful'],
+      ['Cloud provider', 'AWS'],
+      ['Analytics', 'GA4 · Segment'],
+    ],
+    bar: 88,
+  },
+  {
+    index: '05 / Growth Signals',
+    title: 'Catch the moment worth acting on',
+    copy: 'Twelve questions about movement: hiring, launches, announcements, expansion and acquisitions — each with a date attached, so outreach lands while it is still relevant.',
+    points: [
+      'Hiring activity, open roles and which departments',
+      'Product launches, press and AI initiatives',
+      'Expansion, new locations, partnerships and acquisitions',
+    ],
+    mock: [
+      ['Open roles', '34'],
+      ['Hiring trend', '+18% QoQ'],
+      ['Latest launch', '3 days ago'],
     ],
     bar: 91,
   },
   {
-    index: '04 / Report',
-    title: 'Hand over something people read',
-    copy: 'Every analysis exports as a clean brief with sources attached, so the work survives the handoff to whoever is taking the meeting.',
+    index: '06 / Customer Signals',
+    title: 'Hear what their customers say',
+    copy: 'Nine questions across Google, Trustpilot, G2 and Capterra — not just the score, but what gets praised, what gets criticised, and where sentiment sits overall.',
     points: [
-      'One-page brief or full report',
-      'Every claim linked to its source',
-      'Shareable with the whole account team',
+      'Ratings and review volume across every platform',
+      'What customers praise most',
+      'Most common complaints and overall sentiment',
     ],
     mock: [
-      ['Sources cited', '41'],
-      ['Confidence', 'High'],
-      ['Export', 'PDF · Docx'],
+      ['Google rating', '4.6 (2,140)'],
+      ['G2 sentiment', 'Positive'],
+      ['Top complaint', 'Onboarding time'],
+    ],
+    bar: 76,
+  },
+  {
+    index: '07 / Insight & Opportunity',
+    title: 'Hand over something people read',
+    copy: 'The synthesis layer. Eight outputs drawn from everything above — executive summary, SWOT, risks, and the talking points your team actually takes into the meeting.',
+    points: [
+      'Executive summary and full SWOT',
+      'Opportunities, risks and key insights',
+      'Sales talking points and service fit',
+    ],
+    mock: [
+      ['SWOT', 'Complete'],
+      ['Opportunities', '5 surfaced'],
+      ['Talking points', '9'],
     ],
     bar: 85,
   },
@@ -94,6 +143,7 @@ const CAPABILITIES = [
 
 const PLANS = [
   {
+    tier: 'Basic',
     title: 'Start free',
     copy: 'Run your first analyses and see the full report format before committing to anything.',
     points: ['5 company analyses a month', 'Full intelligence brief', 'Source-linked findings'],
@@ -101,6 +151,7 @@ const PLANS = [
     lime: false,
   },
   {
+    tier: 'Pro',
     title: 'Analyse and compare',
     copy: 'For teams working a defined account list who need competitive context on every one of them.',
     points: [
@@ -113,6 +164,7 @@ const PLANS = [
     lime: true,
   },
   {
+    tier: 'Enterprise',
     title: 'Run the whole programme',
     copy: 'For revenue orgs that want intelligence wired into the tools their teams already work in.',
     points: [
@@ -128,12 +180,12 @@ const PLANS = [
 
 const FAQS = [
   {
-    q: 'Where does Cortex get its data?',
-    a: 'Public sources only — company websites, job boards, regulatory filings, app stores, review sites, news and social channels. Every finding links back to the page it came from, so you can check the working.',
+    q: 'Where does 7thSense get its data?',
+    a: 'Public sources only — company websites, job boards, social channels, app and review platforms, and published press. The whole scope is deliberately built without paid data APIs, and every finding links back to the page it came from, so you can check the working.',
   },
   {
-    q: 'How long does one analysis take?',
-    a: 'Around two minutes for a full profile. Competitive benchmarking takes a little longer, since each rival is analysed on the same basis before the comparison is drawn.',
+    q: 'What exactly gets analysed?',
+    a: 'Seven dimensions, ninety-three metrics: Company Profile, Market & Competitors, Digital Presence, Technology Stack, Growth Signals, Customer Signals, and a final Insight & Opportunity layer that synthesises the rest into a summary, SWOT and talking points.',
   },
   {
     q: 'How current is the information?',
@@ -144,17 +196,31 @@ const FAQS = [
     a: 'Yes. Any analysis exports as a PDF or Word document, or as a link that keeps the source citations intact.',
   },
   {
-    q: 'Does Cortex work for private companies?',
+    q: 'Does 7thSense work for private companies?',
     a: 'Yes. Coverage is naturally thinner where a company discloses less, so the report tells you how confident it is in each section rather than filling gaps with guesses.',
   },
 ];
+
+function CheckMark() {
+  return (
+    <svg className="lp-check" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+      <circle cx="10" cy="10" r="9" stroke="currentColor" strokeWidth="1.6" />
+      <path
+        d="M6 10.2l2.6 2.6L14 7.4"
+        stroke="currentColor"
+        strokeWidth="1.9"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
 
 export function Home({
   input,
   setInput,
   onAnalyze,
   onHistory,
-  onNew,
   historyList = mockHistory,
 }: HomeProps) {
   const lightZoneRef = useRef<HTMLDivElement>(null);
@@ -190,6 +256,7 @@ export function Home({
   const hairline = useTransform(theme, [0, 1], ['rgba(255,255,255,0.11)', 'rgba(20,21,30,0.1)']);
   const outline = useTransform(theme, [0, 1], ['rgba(255,255,255,0.34)', 'rgba(20,21,30,0.22)']);
   const chip = useTransform(theme, [0, 1], ['#ffffff', '#f5f5f2']);
+  const planCard = useTransform(theme, [0, 1], ['#242832', '#eef0f3']);
   const heroVeil = useTransform(theme, [0, 1], [1, 0]);
 
   useLayoutEffect(() => {
@@ -204,6 +271,7 @@ export function Home({
       ['--hairline', hairline],
       ['--outline', outline],
       ['--chip', chip],
+      ['--plan-card', planCard],
       ['--hero-veil', heroVeil],
     ];
 
@@ -235,6 +303,7 @@ export function Home({
     hairline,
     outline,
     chip,
+    planCard,
     heroVeil,
     theme,
   ]);
@@ -250,13 +319,13 @@ export function Home({
         <div className="lp-announce lp-bleed">
           <span>New quarter. New pipeline.</span>
           <a
-            href="#analyse"
+            href="#dimensions"
             onClick={(e) => {
               e.preventDefault();
-              document.getElementById('analyse')?.scrollIntoView({ behavior: 'smooth' });
+              document.getElementById('dimensions')?.scrollIntoView({ behavior: 'smooth' });
             }}
           >
-            See what Cortex finds <ArrowRight size={15} />
+            See what 7thSense finds <ArrowRight size={15} />
           </a>
           <button
             className="lp-announce-x"
@@ -270,9 +339,8 @@ export function Home({
 
       {/* ── Hero ─────────────────────────────────────────────────── */}
       <section className="lp-hero lp-bleed">
-        <div className="lp-hero-veil" aria-hidden="true" />
         <div className="lp-wrap">
-          <span className="lp-pill">Cortex for revenue teams</span>
+          <span className="lp-pill">7thSense for revenue teams</span>
 
           <motion.h1
             initial={{ y: 18, opacity: 0 }}
@@ -325,17 +393,17 @@ export function Home({
                 Enter a company name and get a full intelligence brief back in about
                 two minutes. No account needed.
               </p>
-              <button className="lp-btn lp-btn-ghost" onClick={onNew}>
+              <button className="lp-btn lp-btn-ghost" type="button">
                 Get started
               </button>
             </div>
             <div className="lp-card">
               <h3>Talk to our team</h3>
               <p>
-                See how Cortex fits the accounts your team already works, and what it
+                See how 7thSense fits the accounts your team already works, and what it
                 surfaces across a full territory.
               </p>
-              <button className="lp-btn lp-btn-lime" onClick={onNew}>
+              <button className="lp-btn lp-btn-lime" type="button">
                 Request a demo
               </button>
             </div>
@@ -343,24 +411,24 @@ export function Home({
 
           <div className="lp-stats">
             <div className="lp-stat">
-              <b>50M+</b>
-              <span>companies covered</span>
+              <b>7</b>
+              <span>intelligence dimensions</span>
             </div>
             <div className="lp-stat">
-              <b>40+</b>
-              <span>public data sources</span>
+              <b>93</b>
+              <span>tracked metrics</span>
             </div>
             <div className="lp-stat">
-              <b>12</b>
-              <span>intelligence signals</span>
+              <b>36</b>
+              <span>digital presence signals</span>
             </div>
             <div className="lp-stat">
-              <b>2 min</b>
-              <span>average analysis</span>
+              <b>0</b>
+              <span>paid data APIs</span>
             </div>
           </div>
 
-          <p className="lp-trust">Built for the teams who research before they reach out</p>
+          <p className="lp-trust">Point it at any public company — here are a few to start with</p>
         </div>
 
         <div className="lp-marquee">
@@ -377,13 +445,13 @@ export function Home({
       {/* ── light zone begins ────────────────────────────────────── */}
       <div ref={lightZoneRef} />
 
-      <section className="lp-section">
+      <section className="lp-section" id="dimensions">
         <div className="lp-wrap">
           <div className="lp-head">
             <h2>Understand the right accounts, and then win them.</h2>
             <p>
-              Cortex gives your team a complete workflow, from finding what matters
-              about a company to walking into the meeting knowing it.
+              Every analysis runs the same seven dimensions — ninety-three questions
+              in all — so two companies are always compared on the same basis.
             </p>
           </div>
 
@@ -445,17 +513,18 @@ export function Home({
           <div className="lp-cards-3">
             {PLANS.map((plan) => (
               <div className="lp-plan" key={plan.title}>
+                <div className="lp-plan-tier">{plan.tier}</div>
                 <h3>{plan.title}</h3>
                 <p>{plan.copy}</p>
                 <ul>
                   {plan.points.map((point) => (
-                    <li key={point}>{point}</li>
+                    <li key={point}>
+                      <CheckMark />
+                      {point}
+                    </li>
                   ))}
                 </ul>
-                <button
-                  className={`lp-btn ${plan.lime ? 'lp-btn-lime' : 'lp-btn-ghost'}`}
-                  onClick={onNew}
-                >
+                <button className="lp-plan-cta" type="button">
                   {plan.cta}
                 </button>
               </div>
@@ -490,7 +559,7 @@ export function Home({
       </section>
 
       <section className="lp-quote lp-wrap">
-        <div className="lp-quote-eyebrow">Why teams use Cortex</div>
+        <div className="lp-quote-eyebrow">Why teams use 7thSense</div>
         <blockquote>
           “We stopped opening fifteen tabs before every call. The brief is already
           there, and it cites where each line came from.”
@@ -506,7 +575,7 @@ export function Home({
         <section className="lp-cta">
           <h2>Ready to understand your next account?</h2>
           <p>Run your first analysis now — it takes about two minutes.</p>
-          <button className="lp-btn lp-btn-lime" onClick={onNew}>
+          <button className="lp-btn lp-btn-lime" type="button">
             Get started free
           </button>
         </section>
@@ -548,31 +617,55 @@ export function Home({
           <div className="lp-foot-cols">
             <div className="lp-foot-col">
               <h4>Product</h4>
-              <a href="#analyse">Analysis</a>
-              <a href="#analyse">Competitors</a>
-              <a href="#analyse">Signals</a>
-              <a href="#analyse">Reports</a>
+              <button type="button">Analysis</button>
+              <button type="button">Competitors</button>
+              <button type="button">Signals</button>
+              <button type="button">Reports</button>
             </div>
             <div className="lp-foot-col">
               <h4>Company</h4>
-              <a href="#analyse">About</a>
-              <a href="#analyse">Careers</a>
-              <a href="#analyse">Contact</a>
+              <button type="button">About</button>
+              <button type="button">Careers</button>
+              <button type="button">Contact</button>
             </div>
             <div className="lp-foot-col">
               <h4>Resources</h4>
-              <a href="#analyse">Docs</a>
-              <a href="#analyse">Method</a>
-              <a href="#analyse">Sources</a>
+              <button type="button">Docs</button>
+              <button type="button">Method</button>
+              <button type="button">Sources</button>
             </div>
           </div>
         </div>
 
-        <div className="lp-wordmark">Cortex</div>
+        {/* Drawn as SVG so textLength can stretch the lockup to exactly the
+            page width at any viewport — the same edge-to-edge treatment the
+            reference gives its footer wordmark. */}
+        <div className="lp-wordmark">
+          <svg
+            className="lp-wordmark-svg"
+            viewBox="0 0 1200 300"
+            role="img"
+            aria-label="7thSense"
+          >
+            <text
+              x="0"
+              y="252"
+              textLength="1200"
+              lengthAdjust="spacingAndGlyphs"
+              fontFamily="Anton, 'Archivo Black', sans-serif"
+              fontSize="286"
+            >
+              7
+              <tspan fontSize="112" dy="-118">th</tspan>
+              <tspan dy="118">sense</tspan>
+            </text>
+          </svg>
+        </div>
+        <div className="lp-wordmark-tag">Strategy. Insight. Impact.</div>
 
         <div className="lp-foot-fine">
           <span>Built for better conversations.</span>
-          <span>© Cortex / 2024</span>
+          <span>© 7thSense / 2024</span>
         </div>
       </footer>
     </motion.main>
