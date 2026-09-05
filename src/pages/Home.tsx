@@ -14,192 +14,55 @@ export interface HomeProps {
   historyList?: HistoryItem[];
 }
 
-// Example analysis targets — companies you can point 7thSense at.
 const MARQUEE = [
-  'OpenAI',
-  'Microsoft',
-  'Salesforce',
-  'Zoho',
-  'NVIDIA',
-  'Stripe',
-  'Datadog',
-  'Snowflake',
+  { name: 'Amazon', logo: '/amazon.svg' },
+  { name: 'Johnson & Johnson', logo: '/jnj.svg' },
+  { name: 'JPMorgan Chase', logo: '/jpmorgan.svg' },
+  { name: 'Bank of America', logo: 'https://upload.wikimedia.org/wikipedia/commons/2/20/Bank_of_America_logo.svg' },
+  { name: 'UBS', logo: '/ubs.svg' },
+  { name: 'Toyota', logo: 'https://upload.wikimedia.org/wikipedia/commons/e/e7/Toyota.svg' },
+  { name: 'Microsoft', logo: 'https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg' }
 ];
 
-const CAPABILITIES = [
-  {
-    index: '01 / Company Profile',
-    title: 'Understand who they actually are',
-    copy: 'Ten questions that establish the basics before anything else: what the company does in its own words, how it makes money, and who runs it.',
-    points: [
-      'What the company does, and how it describes itself',
-      'Business model, products and services',
-      'Leadership, headquarters and markets served',
-    ],
-    mock: [
-      ['Business model', 'B2B SaaS'],
-      ['Industry', 'Enterprise software'],
-      ['Headquarters', 'San Jose, CA'],
-    ],
-    bar: 82,
-  },
-  {
-    index: '02 / Market & Competitors',
-    title: 'See the whole competitive set',
-    copy: 'Eight questions that place the company in its market — who it is really up against, what separates it from them, and which way the industry is moving.',
-    points: [
-      'Who the key competitors actually are',
-      'Market positioning and what differentiates them',
-      'Segments, partnerships and target industries',
-    ],
-    mock: [
-      ['Key competitors', '6 identified'],
-      ['Positioning', 'Premium / enterprise'],
-      ['Segments served', '4'],
-    ],
-    bar: 64,
-  },
-  {
-    index: '03 / Digital Presence',
-    title: 'Measure every channel they run',
-    copy: 'The deepest dimension at thirty-six metrics: LinkedIn, Instagram, website and SEO, video, and paid advertising — then benchmarked side by side against the competitive set.',
-    points: [
-      'LinkedIn, Instagram and YouTube reach and engagement',
-      'Site performance, indexing, backlinks and publishing cadence',
-      'Live ad activity, creative themes and landing pages',
-    ],
-    mock: [
-      ['LinkedIn followers', '128K'],
-      ['Digital Presence Score', '72 / 100'],
-      ['Biggest channel gap', 'Paid search'],
-    ],
-    bar: 72,
-  },
-  {
-    index: '04 / Technology Stack',
-    title: 'Know what they are built on',
-    copy: 'Ten questions on the engineering surface — frameworks, CMS, hosting and tooling — read straight off what the company already exposes publicly.',
-    points: [
-      'Frameworks, CMS and JavaScript libraries',
-      'Cloud provider, hosting and CDN',
-      'Analytics, security headers and public APIs',
-    ],
-    mock: [
-      ['CMS', 'Contentful'],
-      ['Cloud provider', 'AWS'],
-      ['Analytics', 'GA4 · Segment'],
-    ],
-    bar: 88,
-  },
-  {
-    index: '05 / Growth Signals',
-    title: 'Catch the moment worth acting on',
-    copy: 'Twelve questions about movement: hiring, launches, announcements, expansion and acquisitions — each with a date attached, so outreach lands while it is still relevant.',
-    points: [
-      'Hiring activity, open roles and which departments',
-      'Product launches, press and AI initiatives',
-      'Expansion, new locations, partnerships and acquisitions',
-    ],
-    mock: [
-      ['Open roles', '34'],
-      ['Hiring trend', '+18% QoQ'],
-      ['Latest launch', '3 days ago'],
-    ],
-    bar: 91,
-  },
-  {
-    index: '06 / Customer Signals',
-    title: 'Hear what their customers say',
-    copy: 'Nine questions across Google, Trustpilot, G2 and Capterra — not just the score, but what gets praised, what gets criticised, and where sentiment sits overall.',
-    points: [
-      'Ratings and review volume across every platform',
-      'What customers praise most',
-      'Most common complaints and overall sentiment',
-    ],
-    mock: [
-      ['Google rating', '4.6 (2,140)'],
-      ['G2 sentiment', 'Positive'],
-      ['Top complaint', 'Onboarding time'],
-    ],
-    bar: 76,
-  },
-  {
-    index: '07 / Insight & Opportunity',
-    title: 'Hand over something people read',
-    copy: 'The synthesis layer. Eight outputs drawn from everything above — executive summary, SWOT, risks, and the talking points your team actually takes into the meeting.',
-    points: [
-      'Executive summary and full SWOT',
-      'Opportunities, risks and key insights',
-      'Sales talking points and service fit',
-    ],
-    mock: [
-      ['SWOT', 'Complete'],
-      ['Opportunities', '5 surfaced'],
-      ['Talking points', '9'],
-    ],
-    bar: 85,
-  },
-];
+
 
 const PLANS = [
   {
-    tier: 'Basic',
-    title: 'Start free',
-    copy: 'Run your first analyses and see the full report format before committing to anything.',
-    points: ['5 company analyses a month', 'Full intelligence brief', 'Source-linked findings'],
-    cta: 'Run an analysis',
-    lime: false,
+    tier: 'Pay as you go',
+    copy: 'No minimum commitment\nPause or cancel anytime',
+    price: '$3',
+    priceOriginal: null,
+    period: '/ analysis',
+    points: [
+      '7 intelligence dimensions',
+      '93 tracked metrics',
+      '36 digital presence signals',
+      'Executive summary & SWOT',
+      'Source-linked findings',
+      'Export to PDF & Word',
+    ],
+    cta: 'Get Started',
   },
   {
-    tier: 'Pro',
-    title: 'Analyse and compare',
-    copy: 'For teams working a defined account list who need competitive context on every one of them.',
+    tier: 'Monthly',
+    copy: 'No minimum commitment\nPause or cancel anytime',
+    price: '$14',
+    priceOriginal: '$15',
+    period: '/ 5 analyses',
     points: [
-      'Unlimited analyses',
-      'Competitor benchmarking',
-      'Weekly signal digest',
-      'Shared workspace',
+      '7 intelligence dimensions',
+      '93 tracked metrics',
+      '36 digital presence signals',
+      'Executive summary & SWOT',
+      'Source-linked findings',
+      'Export to PDF & Word',
     ],
-    cta: 'Talk to our team',
-    lime: true,
-  },
-  {
-    tier: 'Enterprise',
-    title: 'Run the whole programme',
-    copy: 'For revenue orgs that want intelligence wired into the tools their teams already work in.',
-    points: [
-      'Everything in Analyse and compare',
-      'API and CRM sync',
-      'Custom signal rules',
-      'Dedicated support',
-    ],
-    cta: 'Contact sales',
-    lime: false,
+    cta: 'Get Started',
+    badge: 'Save $1',
   },
 ];
 
-const FAQS = [
-  {
-    q: 'Where does 7thSense get its data?',
-    a: 'Public sources only — company websites, job boards, social channels, app and review platforms, and published press. The whole scope is deliberately built without paid data APIs, and every finding links back to the page it came from, so you can check the working.',
-  },
-  {
-    q: 'What exactly gets analysed?',
-    a: 'Seven dimensions, ninety-three metrics: Company Profile, Market & Competitors, Digital Presence, Technology Stack, Growth Signals, Customer Signals, and a final Insight & Opportunity layer that synthesises the rest into a summary, SWOT and talking points.',
-  },
-  {
-    q: 'How current is the information?',
-    a: 'Analyses run against live sources the moment you request them. Saved reports keep the date they were generated, and signals are timestamped so you can tell a three-day-old change from a three-month-old one.',
-  },
-  {
-    q: 'Can I share a report outside my team?',
-    a: 'Yes. Any analysis exports as a PDF or Word document, or as a link that keeps the source citations intact.',
-  },
-  {
-    q: 'Does 7thSense work for private companies?',
-    a: 'Yes. Coverage is naturally thinner where a company discloses less, so the report tells you how confident it is in each section rather than filling gaps with guesses.',
-  },
-];
+
 
 function CheckMark() {
   return (
@@ -248,8 +111,22 @@ export function Home({
   const theme = useSpring(rawTheme, { stiffness: 90, damping: 24, mass: 1 });
 
   const pageBg = useTransform(theme, [0, 1], ['#1a1d26', '#ffffff']);
-  const pageInk = useTransform(theme, [0, 1], ['#ffffff', '#14151c']);
-  const pageInkMuted = useTransform(theme, [0, 1], ['#a7adba', '#5c5f6b']);
+  // Text fades on the same 0→1 scroll range as the background, but on its
+  // own curve rather than a straight linear cross-fade. bg and ink move in
+  // opposite directions (dark→light bg, light→dark ink) across that same
+  // range, so any two monotonic curves connecting opposite corners are
+  // mathematically guaranteed to cross somewhere — a plain linear fade
+  // crosses in the middle of the whole range, putting both at nearly the
+  // same mid-gray for a long, sustained stretch of scrolling. Instead, ink
+  // holds its start value for most of the range, then swaps over a narrow
+  // 12% band placed after the background is already mostly light — the
+  // crossing still happens (unavoidable), but it's compressed into a brief
+  // flip instead of a slow fade, so it reads as a fast, deliberate swap
+  // rather than a stretch of unreadable text. Same two endpoint colors,
+  // same scroll range, same spring — only how ink gets from one to the
+  // other changes.
+  const pageInk = useTransform(theme, [0, 0.7, 0.82, 1], ['#ffffff', '#ffffff', '#14151c', '#14151c']);
+  const pageInkMuted = useTransform(theme, [0, 0.7, 0.82, 1], ['#a7adba', '#a7adba', '#5c5f6b', '#5c5f6b']);
   const pageAccent = useTransform(theme, [0, 1], ['#d3fb52', '#4d7c0f']);
   const panel = useTransform(theme, [0, 1], ['#242832', '#f5f5f2']);
   const panelHover = useTransform(theme, [0, 1], ['#2c313d', '#ecece7']);
@@ -275,12 +152,27 @@ export function Home({
       ['--hero-veil', heroVeil],
     ];
 
-    const stops = channels.map(([prop, value]) => {
-      root.style.setProperty(prop, String(value.get()));
-      return value.on('change', (v: string | number) =>
-        root.style.setProperty(prop, String(v))
-      );
-    });
+    // Same colors, same trigger points, same easing as before — this only
+    // changes *when* the writes happen. Each of the 11 vars was previously
+    // written to :root synchronously on its own 'change' event, and every
+    // one of those writes forces a full-page style recalc. On the very
+    // first scroll tick that handler runs cold (unoptimized by the JS
+    // engine) and can eat the frame, which is what made the first scroll
+    // gesture feel like it did nothing. Coalescing into one write per
+    // animation frame removes that stall without altering the transition.
+    let pending = false;
+    const flush = () => {
+      pending = false;
+      channels.forEach(([prop, value]) => root.style.setProperty(prop, String(value.get())));
+    };
+    const scheduleFlush = () => {
+      if (pending) return;
+      pending = true;
+      requestAnimationFrame(flush);
+    };
+
+    flush();
+    const stops = channels.map(([, value]) => value.on('change', scheduleFlush));
 
     const applyDarkFlag = (v: number) =>
       document.body.classList.toggle('lp-page-dark', v < 0.5);
@@ -386,28 +278,7 @@ export function Home({
             ))}
           </div>
 
-          <div className="lp-hero-cards">
-            <div className="lp-card">
-              <h3>Run an analysis free</h3>
-              <p>
-                Enter a company name and get a full intelligence brief back in about
-                two minutes. No account needed.
-              </p>
-              <button className="lp-btn lp-btn-ghost" type="button">
-                Get started
-              </button>
-            </div>
-            <div className="lp-card">
-              <h3>Talk to our team</h3>
-              <p>
-                See how 7thSense fits the accounts your team already works, and what it
-                surfaces across a full territory.
-              </p>
-              <button className="lp-btn lp-btn-lime" type="button">
-                Request a demo
-              </button>
-            </div>
-          </div>
+
 
           <div className="lp-stats">
             <div className="lp-stat">
@@ -433,9 +304,9 @@ export function Home({
 
         <div className="lp-marquee">
           <div className="lp-marquee-track">
-            {[...MARQUEE, ...MARQUEE].map((name, i) => (
-              <div className="lp-chip" key={`${name}-${i}`}>
-                {name}
+            {[...MARQUEE, ...MARQUEE].map((company, i) => (
+              <div className="lp-chip-white" key={`${company.name}-${i}`}>
+                <img src={company.logo} alt={company.name} />
               </div>
             ))}
           </div>
@@ -445,43 +316,10 @@ export function Home({
       {/* ── light zone begins ────────────────────────────────────── */}
       <div ref={lightZoneRef} />
 
-      <section className="lp-section" id="dimensions">
-        <div className="lp-wrap">
-          <div className="lp-head">
-            <h2>Understand the right accounts, and then win them.</h2>
-            <p>
-              Every analysis runs the same seven dimensions — ninety-three questions
-              in all — so two companies are always compared on the same basis.
-            </p>
-          </div>
 
-          {CAPABILITIES.map((cap) => (
-            <div className="lp-cap" key={cap.index}>
-              <div className="lp-cap-copy">
-                <div className="lp-cap-index">{cap.index}</div>
-                <h3>{cap.title}</h3>
-                <p>{cap.copy}</p>
-                <ul>
-                  {cap.points.map((point) => (
-                    <li key={point}>{point}</li>
-                  ))}
-                </ul>
-              </div>
-              <div className="lp-mock" aria-hidden="true">
-                {cap.mock.map(([label, value]) => (
-                  <div className="lp-mock-row" key={label}>
-                    <span>{label}</span>
-                    <span>{value}</span>
-                  </div>
-                ))}
-                <div className="lp-mock-bar">
-                  <i style={{ width: `${cap.bar}%` }} />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+
+      {/* ── light zone begins ────────────────────────────────────── */}
+      <div ref={lightZoneRef} />
 
       <section className="lp-section history-section">
         <div className="lp-wrap">
@@ -505,26 +343,80 @@ export function Home({
         </div>
       </section>
 
-      <section className="lp-section">
+      <section className="lp-section lp-feature">
+        <div className="lp-wrap">
+          <div className="lp-head">
+            <h2>
+              See the bigger picture.
+              <br />
+              Stay ahead of every competitor.
+            </h2>
+            <p>
+              7thSense tracks digital presence the way a research team would — channel
+              by channel, competitor by competitor — so the gap between you and them
+              is never a guess.
+            </p>
+          </div>
+          <div className="lp-feature-grid">
+            <div className="lp-feature-image">
+              <img
+                src="/digital-presence.png"
+                alt="Digital presence intelligence dashboard showing competitive ranking trends and channel-by-channel benchmarks across LinkedIn, YouTube, website and SEO"
+              />
+            </div>
+            <div className="lp-feature-copy">
+              <span className="eyebrow small">
+                <span className="eyebrow-line" />
+                Digital presence intelligence
+              </span>
+              <h3>Every channel, benchmarked against the accounts you're chasing</h3>
+              <p>
+                LinkedIn, YouTube, website and SEO, paid — 36 signals tracked side by
+                side with your competitors and updated as their presence moves, so you
+                always know exactly where you stand and what changed.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="lp-section" id="pricing">
         <div className="lp-wrap">
           <div className="lp-head">
             <h2>From your first analysis to a full research programme</h2>
           </div>
-          <div className="lp-cards-3">
+          <div className="lp-cards-2">
             {PLANS.map((plan) => (
-              <div className="lp-plan" key={plan.title}>
-                <div className="lp-plan-tier">{plan.tier}</div>
-                <h3>{plan.title}</h3>
-                <p>{plan.copy}</p>
-                <ul>
+              <div className="lp-plan-ref" key={plan.tier}>
+                {plan.badge && <div className="lp-plan-badge">{plan.badge}</div>}
+                <div className="lp-plan-tier-ref">{plan.tier}</div>
+                <p className="lp-plan-copy-ref">
+                  {plan.copy.split('\n').map((line, i) => (
+                    <span key={i}>
+                      {line}
+                      <br />
+                    </span>
+                  ))}
+                </p>
+                <div className="lp-plan-price-block">
+                  {plan.priceOriginal && (
+                    <span className="lp-plan-price-strike">{plan.priceOriginal}</span>
+                  )}
+                  <span className="lp-plan-price">{plan.price}</span>
+                  <span className="lp-plan-period">{plan.period}</span>
+                </div>
+                <hr className="lp-plan-div" />
+                <ul className="lp-plan-list">
                   {plan.points.map((point) => (
                     <li key={point}>
-                      <CheckMark />
+                      <span className="lp-plan-check">
+                        <CheckMark />
+                      </span>
                       {point}
                     </li>
                   ))}
                 </ul>
-                <button className="lp-plan-cta" type="button">
+                <button className="lp-plan-btn" type="button">
                   {plan.cta}
                 </button>
               </div>
@@ -581,91 +473,44 @@ export function Home({
         </section>
       </div>
 
-      <section className="lp-faq lp-wrap">
-        <h2>FAQs</h2>
-        {FAQS.map((faq, i) => (
-          <div className={`lp-faq-item${openFaq === i ? ' is-open' : ''}`} key={faq.q}>
-            <button
-              className="lp-faq-q"
-              onClick={() => setOpenFaq(openFaq === i ? null : i)}
-              aria-expanded={openFaq === i}
-            >
-              {faq.q}
-              <i>{openFaq === i ? '−' : '+'}</i>
-            </button>
-            <motion.div
-              className="lp-faq-a"
-              initial={false}
-              animate={{
-                height: openFaq === i ? 'auto' : 0,
-                opacity: openFaq === i ? 1 : 0,
-              }}
-              transition={{ duration: 0.28, ease: [0.4, 0, 0.2, 1] }}
-            >
-              {faq.a}
-            </motion.div>
-          </div>
-        ))}
-      </section>
 
-      <footer className="lp-foot lp-wrap">
-        <div className="lp-foot-top">
-          <div className="lp-foot-tag">
-            Company intelligence, assembled from public data — built for better
-            conversations.
+
+      <footer className="lp-foot-vucko lp-wrap">
+        <div className="vucko-head">
+          <h2>Let's build<br />something great</h2>
+          <a href="mailto:hello@7thsense.com" className="vucko-email">hello@7thsense.com</a>
+        </div>
+
+        <hr className="vucko-line" />
+
+        <div className="vucko-links-area">
+          <div className="vucko-col">
+            <h4>Product</h4>
+            <button type="button">Analysis</button>
+            <button type="button">Competitors</button>
+            <button type="button">Signals</button>
           </div>
-          <div className="lp-foot-cols">
-            <div className="lp-foot-col">
-              <h4>Product</h4>
-              <button type="button">Analysis</button>
-              <button type="button">Competitors</button>
-              <button type="button">Signals</button>
-              <button type="button">Reports</button>
-            </div>
-            <div className="lp-foot-col">
-              <h4>Company</h4>
-              <button type="button">About</button>
-              <button type="button">Careers</button>
-              <button type="button">Contact</button>
-            </div>
-            <div className="lp-foot-col">
-              <h4>Resources</h4>
-              <button type="button">Docs</button>
-              <button type="button">Method</button>
-              <button type="button">Sources</button>
-            </div>
+          <div className="vucko-col">
+            <h4>Company</h4>
+            <button type="button">About</button>
+            <button type="button">Careers</button>
+            <button type="button">Contact</button>
+          </div>
+          <div className="vucko-col">
+            <h4>Resources</h4>
+            <button type="button">Docs</button>
+            <button type="button">Method</button>
+            <button type="button">Sources</button>
           </div>
         </div>
 
-        {/* Drawn as SVG so textLength can stretch the lockup to exactly the
-            page width at any viewport — the same edge-to-edge treatment the
-            reference gives its footer wordmark. */}
-        <div className="lp-wordmark">
-          <svg
-            className="lp-wordmark-svg"
-            viewBox="0 0 1200 300"
-            role="img"
-            aria-label="7thSense"
-          >
-            <text
-              x="0"
-              y="252"
-              textLength="1200"
-              lengthAdjust="spacingAndGlyphs"
-              fontFamily="Anton, 'Archivo Black', sans-serif"
-              fontSize="286"
-            >
-              7
-              <tspan fontSize="112" dy="-118">th</tspan>
-              <tspan dy="118">sense</tspan>
-            </text>
-          </svg>
-        </div>
-        <div className="lp-wordmark-tag">Strategy. Insight. Impact.</div>
-
-        <div className="lp-foot-fine">
-          <span>Built for better conversations.</span>
-          <span>© 7thSense / 2024</span>
+        <div className="vucko-bottom">
+          <div className="vucko-meta">
+            <span>© 7thSense / 2024</span>
+            <button type="button">Privacy</button>
+            <button type="button">Terms</button>
+          </div>
+          <h1 className="vucko-big-logo">7THSENSE™</h1>
         </div>
       </footer>
     </motion.main>
