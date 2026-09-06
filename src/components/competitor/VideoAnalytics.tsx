@@ -21,7 +21,7 @@ export function VideoAnalytics({
   return (
     <SectionBlock
       id="video-section"
-      index="06"
+      index="05"
       title="Video Presence"
       subtitle="YouTube subscribers with views, upload frequency, and catalog size."
       insight={insight}

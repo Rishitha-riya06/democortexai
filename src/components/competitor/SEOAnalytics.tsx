@@ -21,7 +21,7 @@ export function SEOAnalytics({
   return (
     <SectionBlock
       id="seo-section"
-      index="05"
+      index="04"
       title="Search Presence"
       subtitle="Authority proxy with backlinks, indexed pages, and speed."
       insight={insight}

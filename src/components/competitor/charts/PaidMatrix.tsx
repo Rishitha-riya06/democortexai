@@ -9,10 +9,9 @@ export interface PaidMatrixProps {
 }
 
 export function PaidMatrix({ matrix, companyLabels, companyColors }: PaidMatrixProps) {
-  const channels: { key: 'meta' | 'google' | 'linkedin' | 'video'; label: string }[] = [
+  const channels: { key: 'meta' | 'google' | 'video'; label: string }[] = [
     { key: 'meta', label: 'Meta' },
     { key: 'google', label: 'Google' },
-    { key: 'linkedin', label: 'LinkedIn' },
     { key: 'video', label: 'Video' },
   ];
 

@@ -21,7 +21,7 @@ export function WebsiteAnalytics({
   return (
     <SectionBlock
       id="website-section"
-      index="04"
+      index="03"
       title="Website Reach"
       subtitle="Estimated monthly traffic with source and regional signals."
       insight={insight}

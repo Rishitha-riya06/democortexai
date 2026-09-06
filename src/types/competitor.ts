@@ -25,7 +25,6 @@ export interface PaidMatrixRow {
   key: CompanyKey;
   meta: PaidStatus;
   google: PaidStatus;
-  linkedin: PaidStatus;
   video: PaidStatus;
 }
 

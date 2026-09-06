@@ -19,9 +19,9 @@ export function PaidAdsAnalytics({
   return (
     <SectionBlock
       id="paid-section"
-      index="07"
+      index="06"
       title="Paid Presence"
-      subtitle="Detected advertising activity across Meta, Google, LinkedIn, and video."
+      subtitle="Detected advertising activity across Meta, Google, and video."
       insight={insight}
     >
       <PaidMatrix

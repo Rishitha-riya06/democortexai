@@ -62,10 +62,10 @@ export const mockHistory: HistoryItem[] = [
 export const mockExampleCompanies = ['OpenAI', 'Microsoft', 'Salesforce', 'Zoho'];
 
 export const mockCompanyColors: Record<CompanyKey, string> = {
-  target: '#1f9d63',
-  compA: '#12908c',
-  compB: '#2b6fd4',
-  compC: '#8fe0c4',
+  target: '#7c5cff',
+  compA: '#3b82f6',
+  compB: '#22a06b',
+  compC: '#f0973e',
 };
 
 export const mockCompanyLabels: Record<CompanyKey, string> = {

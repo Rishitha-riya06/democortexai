@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
 import { CompanyKey } from '../../types/company';
 import { SnapshotCategory } from '../../types/competitor';
-import { LinkedInIcon, InstagramIcon, YouTubeIcon } from './Icons';
+import { InstagramIcon, YouTubeIcon } from './Icons';
 import { BentoLineChart } from './charts/BentoLineChart';
 
 export interface DigitalScoreProps {
@@ -22,7 +22,6 @@ export function DigitalScore({
   seriesData,
   months,
 }: DigitalScoreProps) {
-  const linkedinRow = snapshotData.find((d) => d.category === 'LinkedIn');
   const instagramRow = snapshotData.find((d) => d.category === 'Instagram');
   const youtubeRow = snapshotData.find((d) => d.category === 'YouTube');
 
@@ -38,7 +37,6 @@ export function DigitalScore({
     };
   };
 
-  const linkedinInfo = getTargetMetric(linkedinRow);
   const instagramInfo = getTargetMetric(instagramRow);
   const youtubeInfo = getTargetMetric(youtubeRow);
 
@@ -92,67 +90,36 @@ export function DigitalScore({
 
         {/* Right Column: Platform Metric Cards */}
         <div className="bento-right-col">
-          <div className="bento-right-top-row">
-            {/* Card 2: LinkedIn */}
-            <motion.button
-              className="bento-card bento-metric-card linkedin-card"
-              onClick={() => scrollToSection('linkedin-section')}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.08 }}
-              whileHover={{ y: -3 }}
-            >
-              <div className="bento-card-top">
-                <div className="platform-icon-badge linkedin-badge">
-                  <LinkedInIcon />
-                </div>
-                <span className="rank-tag">{linkedinInfo.rankStr}</span>
+          {/* Card 2: Instagram */}
+          <motion.button
+            className="bento-card bento-metric-card instagram-card"
+            onClick={() => scrollToSection('instagram-section')}
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.08 }}
+            whileHover={{ y: -3 }}
+          >
+            <div className="bento-card-top">
+              <div className="platform-icon-badge instagram-badge">
+                <InstagramIcon />
               </div>
-              <div className="bento-card-content">
-                <span className="platform-name">LinkedIn</span>
-                <div className="metric-value-row">
-                  <span className="metric-value">{linkedinInfo.val}</span>
-                  <span className="metric-unit">Followers</span>
-                </div>
+              <span className="rank-tag">{instagramInfo.rankStr}</span>
+            </div>
+            <div className="bento-card-content">
+              <span className="platform-name">Instagram</span>
+              <div className="metric-value-row">
+                <span className="metric-value">{instagramInfo.val}</span>
+                <span className="metric-unit">Followers</span>
               </div>
-              <div className="bento-card-footer">
-                <span>View LinkedIn Presence</span>
-                <ChevronRight size={13} />
-              </div>
-            </motion.button>
+            </div>
+            <div className="bento-card-footer">
+              <span>View Instagram Presence</span>
+              <ChevronRight size={13} />
+            </div>
+          </motion.button>
 
-            {/* Card 3: Instagram */}
-            <motion.button
-              className="bento-card bento-metric-card instagram-card"
-              onClick={() => scrollToSection('instagram-section')}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.14 }}
-              whileHover={{ y: -3 }}
-            >
-              <div className="bento-card-top">
-                <div className="platform-icon-badge instagram-badge">
-                  <InstagramIcon />
-                </div>
-                <span className="rank-tag">{instagramInfo.rankStr}</span>
-              </div>
-              <div className="bento-card-content">
-                <span className="platform-name">Instagram</span>
-                <div className="metric-value-row">
-                  <span className="metric-value">{instagramInfo.val}</span>
-                  <span className="metric-unit">Followers</span>
-                </div>
-              </div>
-              <div className="bento-card-footer">
-                <span>View Instagram Presence</span>
-                <ChevronRight size={13} />
-              </div>
-            </motion.button>
-          </div>
-
-          {/* Card 4: YouTube Card */}
+          {/* Card 3: YouTube Card */}
           <motion.button
             className="bento-card bento-metric-card youtube-card"
             onClick={() => scrollToSection('video-section')}

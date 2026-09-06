@@ -22,7 +22,6 @@ export interface CompetitorAnalyticsProps {
 export function CompetitorAnalytics({ company, onBack }: CompetitorAnalyticsProps) {
   const {
     snapshotData,
-    linkedInData,
     instagramData,
     websiteData,
     seoData,
@@ -64,9 +63,7 @@ export function CompetitorAnalytics({ company, onBack }: CompetitorAnalyticsProp
       />
 
       <SocialAnalytics
-        linkedInData={linkedInData}
         instagramData={instagramData}
-        linkedInInsight={sectionInsights.linkedin}
         instagramInsight={sectionInsights.instagram}
         companyLabels={companyLabels}
         companyColors={companyColors}

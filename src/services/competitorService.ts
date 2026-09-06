@@ -2,7 +2,6 @@ import {
   mockCrossPlatformData,
   mockDefaultGapInsights,
   mockInstagramData,
-  mockLinkedInData,
   mockPaidMatrix,
   mockSectionInsights,
   mockSeoData,
@@ -17,10 +16,6 @@ import { CompanyKey } from '../types/company';
 export const competitorService = {
   getSnapshotData(): SnapshotCategory[] {
     return mockSnapshotData;
-  },
-
-  getLinkedInData(): SeriesRow[] {
-    return mockLinkedInData;
   },
 
   getInstagramData(): SeriesRow[] {

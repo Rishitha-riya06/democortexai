@@ -1,9 +1,9 @@
-import { MotionValue, motion, useScroll, useSpring, useTransform } from 'framer-motion';
+import { MotionValue, motion, useInView, useScroll, useSpring, useTransform } from 'framer-motion';
 import { ArrowRight, ArrowUpRight, Search, X } from 'lucide-react';
 import { HistoryItem } from '../types/company';
 import { mockExampleCompanies, mockHistory } from '../data/mockCompanies';
 import { RecentAnalysisCard } from '../components/dashboard/RecentAnalysisCard';
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 export interface HomeProps {
   input: string;
@@ -64,6 +64,96 @@ const PLANS = [
 
 
 
+// Counts from `from` to `to` the moment its OWN element scrolls into
+// view, not the moment the component mounts. On first load the hero
+// stats sit inside the very first screenful of content along with the
+// headline and search box, so a mount-triggered count finished rolling
+// before the visitor had scrolled anywhere near them — by the time they
+// actually looked at that row it just read as a static number. Watching
+// the element itself with `useInView` (from: { once: true }, so it can
+// only ever fire the first time it crosses into the viewport) means the
+// same roll happens on first load too, if the row happens to already be
+// on screen — it isn't skipped, just correctly gated on visibility
+// instead of on mount timing.
+function RollingNumber({ from, to, duration = 1.3 }: { from: number; to: number; duration?: number }) {
+  const [value, setValue] = useState(from);
+  const ref = useRef<HTMLSpanElement>(null);
+  // -80px on the bottom margin means the row has to be meaningfully
+  // inside the viewport (not just barely clipping the edge) before the
+  // roll fires — matches how far a normal scroll gesture already reveals
+  // the row rather than triggering on the first sliver of it.
+  const isInView = useInView(ref, { once: true, margin: '0px 0px -80px 0px' });
+
+  useEffect(() => {
+    if (!isInView) return;
+    // No "only run once" ref guard here on purpose. React's StrictMode
+    // (main.tsx wraps the app in it) deliberately runs this effect twice
+    // in dev — mount, clean up, mount again — to surface exactly this
+    // kind of bug. A guard that remembered "already started" across that
+    // cycle would survive the cleanup (refs aren't reset by it), so the
+    // real second mount would see "already started" and skip re-arming
+    // the loop entirely — the animation would schedule once, get
+    // cancelled by the simulated-unmount cleanup before it painted a
+    // single frame, and then never restart. Letting the effect re-run
+    // cleanly each time it fires means the double-invoke in dev just
+    // restarts the same count once more (imperceptible), and a normal
+    // production mount — which only fires it once — behaves identically.
+    // `isInView` itself only ever flips true once (the `once: true`
+    // option above), so this effect body only ever really runs once too.
+    let frame: number;
+    const start = performance.now();
+    const tick = (now: number) => {
+      const elapsed = (now - start) / 1000;
+      const t = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - t, 3);
+      setValue(Math.round(from + (to - from) * eased));
+      if (t < 1) {
+        frame = requestAnimationFrame(tick);
+      }
+    };
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [isInView, from, to, duration]);
+
+  // Splits the animated integer into its individual digit characters
+  // (no padding — a digit count that changes mid-roll, like 10 -> 9,
+  // just drops that column, the same as a real digital counter would).
+  const digits = String(value).split('').map(Number);
+
+  return (
+    <span ref={ref} className="roll-num">
+      {digits.map((d, i) => (
+        <DigitColumn key={i} digit={d} />
+      ))}
+    </span>
+  );
+}
+
+const DIGIT_STRIP = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+// One column per digit place. Stacks all ten digits 0-9 on top of each
+// other inside a box clipped to one line's height, then slides that
+// whole stack up by `digit` cells with a CSS transition. Because
+// RollingNumber calls setValue on every animation frame, the digit fed
+// in here changes constantly while counting, so each transition
+// immediately gets superseded by the next one — the visible result is
+// the strip continuously sliding upward past several digits at once,
+// which reads as a mechanical odometer roll rather than the numbers
+// simply swapping in place.
+function DigitColumn({ digit }: { digit: number }) {
+  return (
+    <span className="roll-digit">
+      <span className="roll-digit-strip" style={{ transform: `translateY(-${digit * 10}%)` }}>
+        {DIGIT_STRIP.map((d) => (
+          <span key={d} className="roll-digit-cell">
+            {d}
+          </span>
+        ))}
+      </span>
+    </span>
+  );
+}
+
 function CheckMark() {
   return (
     <svg className="lp-check" viewBox="0 0 20 20" fill="none" aria-hidden="true">
@@ -90,6 +180,11 @@ export function Home({
   const darkZoneRef = useRef<HTMLDivElement>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [showAnnounce, setShowAnnounce] = useState(true);
+  // The search pill takes a company name OR a company website — same box,
+  // same submit button — so this stays local to Home rather than lifting
+  // to App the way `input` is (App only ever needed a single free-text
+  // value for its mock lookup, and still only gets one string back).
+  const [website, setWebsite] = useState('');
 
   // ── Page theme ────────────────────────────────────────────────────
   // The page runs dark → light → dark, like the reference: hero and
@@ -211,13 +306,13 @@ export function Home({
         <div className="lp-announce lp-bleed">
           <span>New quarter. New pipeline.</span>
           <a
-            href="#dimensions"
+            href="#pricing"
             onClick={(e) => {
               e.preventDefault();
-              document.getElementById('dimensions')?.scrollIntoView({ behavior: 'smooth' });
+              document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' });
             }}
           >
-            See what 7thSense finds <ArrowRight size={15} />
+            See our pricing <ArrowRight size={15} />
           </a>
           <button
             className="lp-announce-x"
@@ -254,16 +349,37 @@ export function Home({
             id="analyse"
             onSubmit={(event) => {
               event.preventDefault();
-              onAnalyze(input);
+              // The client fills in both — name and site — but
+              // onAnalyze only takes one search string. Name alone still
+              // resolves against the mock history list exactly like the
+              // old single field did; once a website is added too, the
+              // two are combined so neither gets silently dropped.
+              const name = input.trim();
+              const site = website.trim();
+              const value = site ? (name ? `${name} (${site})` : site) : name;
+              if (!value) return;
+              onAnalyze(value);
+              setWebsite('');
             }}
           >
             <Search size={19} />
-            <input
-              value={input}
-              onChange={(event) => setInput(event.target.value)}
-              placeholder="Enter a company to understand..."
-              aria-label="Company name"
-            />
+            <div className="lp-search-fields">
+              <input
+                value={input}
+                onChange={(event) => setInput(event.target.value)}
+                placeholder="Company name..."
+                aria-label="Company name"
+              />
+              <span className="lp-search-divider" aria-hidden="true" />
+              <input
+                value={website}
+                onChange={(event) => setWebsite(event.target.value)}
+                placeholder="Company website..."
+                aria-label="Company website"
+                type="text"
+                inputMode="url"
+              />
+            </div>
             <button type="submit" aria-label="Run analysis">
               <ArrowUpRight size={19} />
             </button>
@@ -282,19 +398,19 @@ export function Home({
 
           <div className="lp-stats">
             <div className="lp-stat">
-              <b>7</b>
+              <b><RollingNumber from={0} to={7} /></b>
               <span>intelligence dimensions</span>
             </div>
             <div className="lp-stat">
-              <b>93</b>
+              <b><RollingNumber from={0} to={93} /></b>
               <span>tracked metrics</span>
             </div>
             <div className="lp-stat">
-              <b>36</b>
+              <b><RollingNumber from={0} to={36} /></b>
               <span>digital presence signals</span>
             </div>
             <div className="lp-stat">
-              <b>0</b>
+              <b><RollingNumber from={10} to={0} /></b>
               <span>paid data APIs</span>
             </div>
           </div>
@@ -361,7 +477,10 @@ export function Home({
             <div className="lp-feature-image">
               <img
                 src="/digital-presence.png"
-                alt="Digital presence intelligence dashboard showing competitive ranking trends and channel-by-channel benchmarks across LinkedIn, YouTube, website and SEO"
+                alt="Digital presence intelligence dashboard showing competitive ranking trends and channel-by-channel benchmarks across Instagram, YouTube, website and SEO"
+                width={822}
+                height={847}
+                decoding="async"
               />
             </div>
             <div className="lp-feature-copy">
@@ -371,7 +490,7 @@ export function Home({
               </span>
               <h3>Every channel, benchmarked against the accounts you're chasing</h3>
               <p>
-                LinkedIn, YouTube, website and SEO, paid — 36 signals tracked side by
+                Instagram, YouTube, website and SEO, paid — 36 signals tracked side by
                 side with your competitors and updated as their presence moves, so you
                 always know exactly where you stand and what changed.
               </p>
@@ -439,7 +558,7 @@ export function Home({
               <p>more context going into first calls, versus teams researching by hand</p>
             </div>
             <div className="lp-metric">
-              <b>2 min</b>
+              <b>10 min</b>
               <p>from a company name to a sourced brief the whole account team can read</p>
             </div>
             <div className="lp-metric">
@@ -483,32 +602,21 @@ export function Home({
 
         <hr className="vucko-line" />
 
-        <div className="vucko-links-area">
-          <div className="vucko-col">
-            <h4>Product</h4>
-            <button type="button">Analysis</button>
-            <button type="button">Competitors</button>
-            <button type="button">Signals</button>
-          </div>
-          <div className="vucko-col">
-            <h4>Company</h4>
-            <button type="button">About</button>
-            <button type="button">Careers</button>
-            <button type="button">Contact</button>
-          </div>
-          <div className="vucko-col">
-            <h4>Resources</h4>
-            <button type="button">Docs</button>
-            <button type="button">Method</button>
-            <button type="button">Sources</button>
-          </div>
-        </div>
-
         <div className="vucko-bottom">
-          <div className="vucko-meta">
-            <span>© 7thSense / 2024</span>
-            <button type="button">Privacy</button>
-            <button type="button">Terms</button>
+          <div className="vucko-bottom-left">
+            <div className="vucko-links-area">
+              <div className="vucko-col">
+                <h4>Product</h4>
+                <button type="button">Analysis</button>
+                <button type="button">Competitors</button>
+                <button type="button">Signals</button>
+              </div>
+            </div>
+            <div className="vucko-meta">
+              <span>© 7thSense / 2024</span>
+              <button type="button">Privacy</button>
+              <button type="button">Terms</button>
+            </div>
           </div>
           <h1 className="vucko-big-logo">7THSENSE™</h1>
         </div>

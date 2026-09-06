@@ -60,7 +60,6 @@ export function Topbar({ screen, onHome, onNew }: TopbarProps) {
           <nav className="nav-links">
             <button onClick={onHome}>History</button>
             <button onClick={onNew}>New analysis</button>
-            <button className="muted-nav">Settings</button>
           </nav>
         ) : (
           <div className="nav-context">
@@ -112,7 +111,6 @@ export function Topbar({ screen, onHome, onNew }: TopbarProps) {
                 >
                   New analysis
                 </button>
-                <button className="muted-nav">Settings</button>
                 <div className="mobile-menu-divider" />
               </>
             )}

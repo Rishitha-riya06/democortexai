@@ -2934,7 +2934,10 @@ input:focus-visible {
     max-width: 760px;
     margin: 0 auto;
     padding: 28px 0 30px;
-    font-family: 'Manrope', sans-serif;
+    /* Small text (body copy, labels, pills, list items) on this page runs
+       Montserrat SemiBold. Headings (h1/h2/h3, card titles) keep
+       'Clash Display' below — untouched. */
+    font-family: 'Montserrat', sans-serif;
 }
 
 .reference-header {
@@ -2978,8 +2981,8 @@ input:focus-visible {
 }
 
 .reference-brand span {
-    font-size: 11px;
-    color: #6b6d76;
+    font-size: 12px;
+    color: #000000;
     font-weight: 600;
     font-family: 'Montserrat', sans-serif;
 }
@@ -2988,9 +2991,9 @@ input:focus-visible {
     display: flex;
     align-items: center;
     gap: 14px;
-    color: #6b6d76;
+    color: #000000;
     font-family: 'Montserrat', sans-serif;
-    font-size: 11px;
+    font-size: 12px;
     text-transform: uppercase;
     letter-spacing: .04em;
     font-weight: 600;
@@ -3028,9 +3031,9 @@ input:focus-visible {
 }
 
 .reference-kicker {
-    color: #6b6d76;
+    color: #000000;
     font-family: 'Montserrat', sans-serif;
-    font-size: 11px;
+    font-size: 12px;
     text-transform: uppercase;
     letter-spacing: .05em;
     margin: 0 0 8px;
@@ -3047,8 +3050,8 @@ input:focus-visible {
 }
 
 .reference-subtitle {
-    color: #6b6d76;
-    font-size: 14px;
+    color: #000000;
+    font-size: 15px;
     margin: 8px 0 0;
     font-weight: 600;
 }
@@ -3085,19 +3088,19 @@ input:focus-visible {
     display: flex;
     flex-direction: column;
     gap: 4px;
-    color: #6b6d76;
+    color: #000000;
     font-family: 'Montserrat', sans-serif;
-    font-size: 10px;
+    font-size: 11px;
     text-transform: uppercase;
     letter-spacing: .05em;
     font-weight: 600;
 }
 
 .reference-facts b {
-    color: #6b6d76;
-    font-family: 'Manrope', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
+    color: #000000;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
     text-transform: none;
     letter-spacing: 0;
 }
@@ -3107,8 +3110,8 @@ input:focus-visible {
 }
 
 .reference-summary p {
-    color: #6b6d76;
-    font-size: 16px;
+    color: #000000;
+    font-size: 17px;
     line-height: 1.7;
     margin: 0 0 16px;
     max-width: 680px;
@@ -3122,8 +3125,8 @@ input:focus-visible {
 }
 
 .reference-tag {
-    font-size: 12px;
-    color: #6b6d76;
+    font-size: 13px;
+    color: #000000;
     background: #f2f1ec;
     border: 1px solid rgba(20, 21, 30, 0.12);
     border-radius: 99px;
@@ -3145,12 +3148,12 @@ input:focus-visible {
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    color: #6b6d76;
+    color: #000000;
     background: #f2f1ec;
     border: 1px solid rgba(20, 21, 30, 0.12);
     border-radius: 99px;
     padding: 7px 12px;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 600;
     font-family: 'Montserrat', sans-serif;
 }
@@ -3183,8 +3186,8 @@ input:focus-visible {
 }
 
 .reference-section>p {
-    color: #6b6d76;
-    font-size: 15px;
+    color: #000000;
+    font-size: 16px;
     line-height: 1.75;
     margin: 0 0 16px;
     max-width: 680px;
@@ -3206,7 +3209,7 @@ input:focus-visible {
     border: 1px solid rgba(20, 21, 30, 0.12);
     border-radius: 14px;
     padding: 16px 17px;
-    background: #f2f1ec;
+    background: linear-gradient(120deg, #e3f6ec 0%, #bfe9d1 45%, #eaf6b8 100%);
 }
 
 .reference-card h3 {
@@ -3218,8 +3221,8 @@ input:focus-visible {
 }
 
 .reference-card p {
-    color: #6b6d76;
-    font-size: 14px;
+    color: #000000;
+    font-size: 15px;
     line-height: 1.65;
     margin: 0 0 14px;
     font-weight: 500;
@@ -3238,8 +3241,8 @@ input:focus-visible {
 }
 
 .reference-list li {
-    color: #6b6d76;
-    font-size: 14px;
+    color: #000000;
+    font-size: 15px;
     line-height: 1.65;
     padding-left: 18px;
     position: relative;
@@ -3274,8 +3277,8 @@ input:focus-visible {
     display: grid;
     grid-template-columns: 24px 1fr;
     gap: 12px;
-    color: #6b6d76;
-    font-size: 14px;
+    color: #000000;
+    font-size: 15px;
     line-height: 1.65;
     font-weight: 500;
 }
@@ -3290,7 +3293,7 @@ input:focus-visible {
     color: #14151c;
     font-family: 'Montserrat', sans-serif;
     font-size: 12px;
-    font-weight: 700;
+    font-weight: 600;
 }
 
 .reference-quote {
@@ -3298,8 +3301,8 @@ input:focus-visible {
     background: #f2f1ec;
     border-left: 2px solid #252630;
     border-radius: 0 12px 12px 0;
-    color: #6b6d76;
-    font-size: 15px;
+    color: #000000;
+    font-size: 16px;
     line-height: 1.7;
     font-style: italic;
     font-weight: 500;
@@ -3535,16 +3538,6 @@ input:focus-visible {
 .bento-metric-card:hover .platform-icon-badge {
     transform: scale(1.04);
     background: rgba(255, 255, 255, 0.14);
-}
-
-.linkedin-card {
-    background: linear-gradient(135deg, #1888e8 0%, #0b6ec5 45%, #0a5da8 65%, #0d1b2a 100%);
-    border-color: rgba(10, 102, 194, 0.2);
-}
-
-.linkedin-card:hover {
-    background: linear-gradient(135deg, #1a90f0 0%, #0d76cc 45%, #0960aa 65%, #091524 100%);
-    border-color: rgba(10, 102, 194, 0.3);
 }
 
 .instagram-card {
@@ -3974,7 +3967,20 @@ input:focus-visible {
 .lp-page {
     font-family: 'Inter', 'Manrope', sans-serif;
     color: var(--page-ink);
-    overflow-x: hidden;
+    /* `clip`, not `hidden`. CSS forbids overflow-x:hidden alongside
+       overflow-y:visible, so the browser silently promotes the y axis to
+       `auto` — which turned this element (the wrapper around the WHOLE
+       landing page) into a nested scroll container. The giant footer
+       wordmark overflows its 0.8 line-height by ~41px, so that container
+       had 41px of real scroll range, and Chrome latches a wheel gesture
+       to the innermost scroller under the cursor: every gesture was
+       swallowed by those 41px and never reached the document, so the page
+       stopped mid-scroll and only moved on the *next* gesture. Measured:
+       a 10-tick wheel scroll moved the document 0px and this element
+       40.8px. `clip` is legal next to overflow-y:visible, so no scroll
+       container is created — same horizontal clipping, nothing else
+       changes. Same reason .app-shell above uses clip. */
+    overflow-x: clip;
     position: relative;
     z-index: 1;
 }
@@ -4181,6 +4187,29 @@ input:focus-visible {
     color: #8a8d96;
 }
 
+/* ─── Split search pill (name + website) ───────────────────────────
+   Two inputs, one pill. Both inputs sit in this flex row rather than
+   directly in .lp-search — that row is the single flex child that gets
+   `.lp-search`'s existing `flex:1; min-width:0` (that rule is a
+   descendant selector, so it already reaches inputs nested this deep,
+   no new rule needed for the inputs themselves) — and the hairline
+   between them is the only visual seam, so it still reads as one
+   search box with two fields rather than two boxes glued together. */
+.lp-search-fields {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+    gap: 14px;
+}
+
+.lp-search-divider {
+    width: 1px;
+    height: 24px;
+    flex: 0 0 auto;
+    background: rgba(20, 21, 30, .12);
+}
+
 .lp-search button {
     width: 50px;
     height: 50px;
@@ -4238,11 +4267,63 @@ input:focus-visible {
 
 .lp-stat b {
     display: block;
-    font-size: clamp(34px, 3.4vw, 50px);
+    font-size: clamp(60px, 5.8vw, 92px);
     font-weight: 500;
     letter-spacing: -.03em;
     line-height: 1.05;
     color: var(--page-ink);
+}
+
+/* ─── Rolling number (hero stats) ──────────────────────────────────
+   Each digit gets its own vertical strip holding 0-9 stacked on top of
+   each other, clipped to one line's height. Sliding that strip up by
+   `digit` cells (Home.tsx sets the transform) is what makes a digit
+   change read as it physically rolling past, like a mechanical
+   odometer, instead of the character just swapping in place.
+   Scoped under ".lp-stat b" rather than left as bare classes — the
+   ".lp-stat span" rule further down (meant for the label line under
+   each number) is a descendant selector, so it also matches every one
+   of these nested spans (roll-num, roll-digit, roll-digit-strip,
+   roll-digit-cell are all <span> elements living inside .lp-stat), and
+   its higher specificity was silently forcing them to `display: block`
+   AND to its own small `font-size`. The display fix below already
+   existed; `font-size: inherit` is added on all four so each level
+   explicitly re-inherits the real (large) number size from .lp-stat b
+   instead of getting individually reset back down to the label's
+   20-30px size — CSS inheritance doesn't apply once a same-specificity
+   or more-specific rule matches an element directly, so every level
+   needs its own override, not just the innermost one. */
+.lp-stat b .roll-num {
+    display: inline-flex;
+    font-size: inherit;
+}
+
+.lp-stat b .roll-digit {
+    display: inline-block;
+    overflow: hidden;
+    height: 1.05em;
+    line-height: 1.05;
+    font-size: inherit;
+    /* Approximates the -.03em letter-spacing above, which only affects
+       text runs and doesn't pull separate inline-block digits together
+       on its own. */
+    margin-right: -.03em;
+}
+
+.lp-stat b .roll-digit-strip {
+    display: flex;
+    flex-direction: column;
+    font-size: inherit;
+    transition: transform .5s cubic-bezier(.22, .8, .32, 1);
+}
+
+.lp-stat b .roll-digit-cell {
+    height: 1.05em;
+    line-height: 1.05;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: inherit;
 }
 
 .lp-stat span {
@@ -5237,17 +5318,25 @@ input:focus-visible {
     margin: 0 0 64px 0;
 }
 
+/* Nested inside .vucko-bottom-left now (beside the giant wordmark) rather
+   than sitting alone in its own wide row — the wrapper's own gap handles
+   spacing down to the copyright line, so this loses its old margin. */
 .vucko-links-area {
     display: flex;
     flex-wrap: wrap;
     gap: 120px;
-    margin-bottom: 120px;
+    margin-bottom: 0;
+}
+
+.vucko-bottom-left {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
 }
 
 @media (max-width: 640px) {
     .vucko-links-area {
         gap: 40px 32px;
-        margin-bottom: 64px;
     }
 }
 
