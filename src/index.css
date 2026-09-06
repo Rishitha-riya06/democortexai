@@ -2902,13 +2902,15 @@ input:focus-visible {
 
 .gap-insight-card h3 {
     font-size: 16px;
+    font-weight: 600;
     letter-spacing: -.04em;
     margin: 0 0 8px;
 }
 
 .gap-insight-card p {
-    color: #6b6d76;
-    font-size: 12px;
+    color: #14151c;
+    font-size: 13px;
+    font-weight: 500;
     line-height: 1.65;
     margin: 0;
 }
