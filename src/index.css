@@ -2510,15 +2510,15 @@ input:focus-visible {
 .bar-row {
     position: relative;
     display: grid;
-    grid-template-columns: 110px 1fr;
+    grid-template-columns: 124px 1fr;
     align-items: center;
     gap: 14px;
 }
 
 .bar-company {
-    color: #6b6d76;
-    font-size: 11px;
-    font-weight: 500;
+    color: #14151c;
+    font-size: 13px;
+    font-weight: 600;
     white-space: nowrap;
 }
 
@@ -2610,11 +2610,11 @@ input:focus-visible {
 }
 
 .sub-metric-label {
-    color: #6b6d76;
+    color: #14151c;
     font-family: 'DM Mono', monospace;
     text-transform: uppercase;
     font-size: 10px;
-    font-weight: 700;
+    font-weight: 600;
     letter-spacing: .06em;
     margin: 0 0 12px;
 }
@@ -2635,12 +2635,13 @@ input:focus-visible {
 }
 
 .sub-company {
-    color: #6b6d76;
-    font-weight: 500;
+    color: #14151c;
+    font-weight: 600;
     flex: 1;
 }
 
 .sub-metric-cell strong {
+    color: #14151c;
     font-weight: 700;
     font-size: 12px;
 }
@@ -2675,8 +2676,9 @@ input:focus-visible {
 }
 
 .grouped-bar-company {
-    font-size: 9px;
-    color: #6b6d76;
+    font-size: 11px;
+    font-weight: 600;
+    color: #14151c;
     white-space: nowrap;
 }
 
@@ -2762,9 +2764,34 @@ input:focus-visible {
     color: #6b6d76;
 }
 
+.paid-split {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 40px;
+    align-items: start;
+}
+
+.paid-split-col:first-child {
+    padding-right: 40px;
+    border-right: 1px solid rgba(20, 21, 30, 0.12);
+}
+
+.linkedin-checklist-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #14151c;
+    margin: 0 0 18px;
+}
+
+.linkedin-matrix {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 0;
+}
+
 .paid-matrix {
     display: grid;
-    grid-template-columns: 140px repeat(4, 1fr);
+    grid-template-columns: 110px repeat(3, 1fr);
     gap: 0;
 }
 
@@ -3920,7 +3947,23 @@ input:focus-visible {
     }
 
     .paid-matrix {
-        grid-template-columns: 110px repeat(4, 1fr);
+        grid-template-columns: 90px repeat(3, 1fr);
+    }
+
+    .linkedin-matrix {
+        grid-template-columns: 90px 1fr;
+    }
+
+    .paid-split {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+
+    .paid-split-col:first-child {
+        padding-right: 0;
+        padding-bottom: 24px;
+        border-right: 0;
+        border-bottom: 1px solid rgba(20, 21, 30, 0.12);
     }
 
     .bento-grid {
@@ -4066,7 +4109,7 @@ input:focus-visible {
     }
 
     .bar-company {
-        font-size: 10px;
+        font-size: 12px;
     }
 
     .sub-metrics-grid {
@@ -4074,7 +4117,11 @@ input:focus-visible {
     }
 
     .paid-matrix {
-        grid-template-columns: 90px repeat(4, 1fr);
+        grid-template-columns: 74px repeat(3, 1fr);
+    }
+
+    .linkedin-matrix {
+        grid-template-columns: 74px 1fr;
     }
 
     .pm-company-label {

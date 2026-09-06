@@ -27,6 +27,7 @@ export function CompetitorAnalytics({ company, onBack }: CompetitorAnalyticsProp
     seoData,
     videoData,
     paidMatrix,
+    linkedInData,
     crossPlatformData,
     sectionInsights,
     gapInsights,
@@ -92,6 +93,7 @@ export function CompetitorAnalytics({ company, onBack }: CompetitorAnalyticsProp
 
       <PaidAdsAnalytics
         matrix={paidMatrix}
+        linkedInData={linkedInData}
         insight={sectionInsights.paid}
         companyLabels={companyLabels}
         companyColors={companyColors}

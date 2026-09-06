@@ -3,6 +3,7 @@ import {
   mockCrossPlatformData,
   mockDefaultGapInsights,
   mockInstagramData,
+  mockLinkedInData,
   mockPaidMatrix,
   mockSectionInsights,
   mockSeoData,
@@ -19,6 +20,7 @@ export function useCompetitors() {
   const seoData = useMemo(() => mockSeoData, []);
   const videoData = useMemo(() => mockVideoData, []);
   const paidMatrix = useMemo(() => mockPaidMatrix, []);
+  const linkedInData = useMemo(() => mockLinkedInData, []);
   const crossPlatformData = useMemo(() => mockCrossPlatformData, []);
   const sectionInsights = useMemo(() => mockSectionInsights, []);
   const gapInsights = useMemo(() => mockDefaultGapInsights, []);
@@ -32,6 +34,7 @@ export function useCompetitors() {
     seoData,
     videoData,
     paidMatrix,
+    linkedInData,
     crossPlatformData,
     sectionInsights,
     gapInsights,

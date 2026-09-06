@@ -1,4 +1,4 @@
-import { GapInsightItem, PaidMatrixRow, SeriesRow, SnapshotCategory } from '../types/competitor';
+import { GapInsightItem, LinkedInRow, PaidMatrixRow, SeriesRow, SnapshotCategory } from '../types/competitor';
 
 export const mockSnapshotData: SnapshotCategory[] = [
   {
@@ -72,6 +72,13 @@ export const mockPaidMatrix: PaidMatrixRow[] = [
   { key: 'compA', meta: 'detected', google: 'detected', video: 'detected' },
   { key: 'compB', meta: 'none', google: 'detected', video: 'none' },
   { key: 'compC', meta: 'detected', google: 'none', video: 'detected' },
+];
+
+export const mockLinkedInData: LinkedInRow[] = [
+  { key: 'target', status: 'detected' },
+  { key: 'compA', status: 'detected' },
+  { key: 'compB', status: 'detected' },
+  { key: 'compC', status: 'none' },
 ];
 
 export const mockCrossPlatformData = mockSnapshotData;

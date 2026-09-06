@@ -28,6 +28,11 @@ export interface PaidMatrixRow {
   video: PaidStatus;
 }
 
+export interface LinkedInRow {
+  key: CompanyKey;
+  status: PaidStatus;
+}
+
 export interface GapInsightItem {
   metric: string;
   text: string;
