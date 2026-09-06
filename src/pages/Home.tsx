@@ -17,7 +17,6 @@ export interface HomeProps {
 const MARQUEE = [
   { name: 'Amazon', logo: '/amazon.svg' },
   { name: 'Johnson & Johnson', logo: '/jnj.svg' },
-  { name: 'JPMorgan Chase', logo: '/jpmorgan.svg' },
   { name: 'Bank of America', logo: 'https://upload.wikimedia.org/wikipedia/commons/2/20/Bank_of_America_logo.svg' },
   { name: 'UBS', logo: '/ubs.svg' },
   { name: 'Toyota', logo: 'https://upload.wikimedia.org/wikipedia/commons/e/e7/Toyota.svg' },
@@ -305,7 +304,7 @@ export function Home({
     >
       {showAnnounce && (
         <div className="lp-announce lp-bleed">
-          <span>New quarter. New pipeline.</span>
+          <span>New quarter. New pricing.</span>
           <a
             href="#pricing"
             onClick={(e) => {

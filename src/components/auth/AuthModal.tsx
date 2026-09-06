@@ -1,5 +1,7 @@
 import { FormEvent, useState } from 'react';
 import { Modal } from '../common/Modal';
+import { CountryCodeSelect } from './CountryCodeSelect';
+import { countryCodes } from '../../data/countryCodes';
 
 export type AuthMode = 'login' | 'signup' | null;
 
@@ -9,8 +11,11 @@ export interface AuthModalProps {
   onSwitchMode: (mode: AuthMode) => void;
 }
 
+const defaultCountry = countryCodes.find((c) => c.iso2 === 'IN') ?? countryCodes[0];
+
 export function AuthModal({ mode, onClose, onSwitchMode }: AuthModalProps) {
   const [agreed, setAgreed] = useState(false);
+  const [country, setCountry] = useState(defaultCountry);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -46,14 +51,17 @@ export function AuthModal({ mode, onClose, onSwitchMode }: AuthModalProps) {
         {mode === 'signup' && (
           <div className="auth-field">
             <label htmlFor="auth-mobile">Mobile number</label>
-            <input
-              id="auth-mobile"
-              name="mobile"
-              type="tel"
-              placeholder="+1 (555) 000-0000"
-              autoComplete="tel"
-              required
-            />
+            <div className="phone-input">
+              <CountryCodeSelect value={country} onChange={setCountry} />
+              <input
+                id="auth-mobile"
+                name="mobileNumber"
+                type="tel"
+                placeholder="555 000 0000"
+                autoComplete="tel-national"
+                required
+              />
+            </div>
           </div>
         )}
 

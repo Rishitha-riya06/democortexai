@@ -1,4 +1,4 @@
-import { ArrowUpRight, ExternalLink } from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
 import { Company } from '../../types/company';
 import { ConfidenceBadge, ReportTag } from '../analysis/ConfidenceBadge';
 import {
@@ -10,11 +10,10 @@ import { ReportSection } from './ReportSection';
 
 export interface ReportPreviewProps {
   company: Company;
-  onOverviewClick?: () => void;
   onShare?: () => void;
 }
 
-export function ReportPreview({ company, onOverviewClick, onShare }: ReportPreviewProps) {
+export function ReportPreview({ company, onShare }: ReportPreviewProps) {
   const isOpenAI = company === 'OpenAI';
   const displayCompany = isOpenAI ? 'OpenAI' : company;
 
@@ -51,9 +50,6 @@ export function ReportPreview({ company, onOverviewClick, onShare }: ReportPrevi
               Enterprise Technology &amp; Cloud Services
             </p>
           </div>
-          <button className="reference-action" onClick={onOverviewClick}>
-            Company overview <ArrowUpRight size={12} />
-          </button>
         </div>
 
         <div className="reference-facts">
