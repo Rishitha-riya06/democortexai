@@ -52,7 +52,7 @@ export function Topbar({ screen, onHome, onNew }: TopbarProps) {
           </button>
 
           <button className="wm-tile" onClick={onHome} aria-label="Go to 7thSense home" tabIndex={-1}>
-            7
+            <span className="wm-tile-text">7<sup>th</sup></span>
           </button>
         </div>
 

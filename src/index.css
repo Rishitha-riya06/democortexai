@@ -252,10 +252,25 @@ input:focus-visible {
     background: #d3fb52;
     color: #14151c;
     font-family: 'Anton', sans-serif;
-    font-size: 24px;
+    font-size: 18px;
     line-height: 1;
     padding-bottom: 2px;
     cursor: pointer;
+}
+
+.wm-tile-text {
+    display: inline-flex;
+    align-items: flex-start;
+    white-space: nowrap;
+}
+
+.wm-tile sup {
+    font-size: .48em;
+    line-height: 1;
+    margin: 0 0 0 1px;
+    vertical-align: top;
+    top: -1px;
+    position: relative;
 }
 
 .top-nav.is-docked .nav-links {
@@ -3257,11 +3272,11 @@ input:focus-visible {
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: #d3fb52;
+    background: #000000;
 }
 
 .reference-list.accent-list li::before {
-    background: #d3fb52;
+    background: #000000;
 }
 
 .reference-numbered-list {

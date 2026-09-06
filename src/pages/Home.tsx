@@ -174,6 +174,7 @@ export function Home({
   setInput,
   onAnalyze,
   onHistory,
+  onNew,
   historyList = mockHistory,
 }: HomeProps) {
   const lightZoneRef = useRef<HTMLDivElement>(null);
@@ -586,8 +587,8 @@ export function Home({
         <section className="lp-cta">
           <h2>Ready to understand your next account?</h2>
           <p>Run your first analysis now — it takes about two minutes.</p>
-          <button className="lp-btn lp-btn-lime" type="button">
-            Get started free
+          <button className="lp-btn lp-btn-lime" type="button" onClick={onNew}>
+            Get started now
           </button>
         </section>
       </div>
