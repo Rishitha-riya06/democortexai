@@ -11,7 +11,6 @@ export interface LinkedInChecklistProps {
 export function LinkedInChecklist({ data, companyLabels, companyColors }: LinkedInChecklistProps) {
   return (
     <div className="linkedin-checklist">
-      <p className="linkedin-checklist-title">LinkedIn Presence</p>
       <div className="linkedin-matrix">
         <div className="pm-corner" />
         <div className="pm-channel-header">LinkedIn profile</div>

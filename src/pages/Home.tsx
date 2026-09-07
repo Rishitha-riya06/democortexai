@@ -614,8 +614,8 @@ export function Home({
             </div>
             <div className="vucko-meta">
               <span>© 7thSense / 2024</span>
-              <button type="button">Privacy</button>
-              <button type="button">Terms</button>
+              <a href="/privacy.html">Privacy</a>
+              <a href="/terms.html">Terms</a>
             </div>
           </div>
           <h1 className="vucko-big-logo">7THSENSE™</h1>

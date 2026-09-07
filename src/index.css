@@ -114,6 +114,16 @@ input:focus-visible {
 .app-shell {
     min-height: 100vh;
     overflow-x: clip;
+    /* .app-atmosphere below is absolutely positioned with a fixed 2400px
+       height. An absolutely positioned child inflates its positioned
+       ancestor's scrollable area even while fully faded to opacity 0 —
+       so on a wide screen, where the landing page's actual content ends
+       up shorter than 2400px, the page kept scrolling past the real
+       footer into blank space. Clipping this axis too (already clipped
+       on x, for the unrelated reason noted below) stops that invisible
+       tail from extending the page past its real content, without
+       touching anything that's actually visible. */
+    overflow-y: clip;
     position: relative;
 }
 
@@ -2482,8 +2492,9 @@ input:focus-visible {
 }
 
 .viz-insight p {
-    color: #6b6d76;
+    color: #14151c;
     font-size: 12px;
+    font-weight: 600;
     line-height: 1.6;
     margin: 0;
 }
@@ -2798,10 +2809,11 @@ input:focus-visible {
 .pm-corner {}
 
 .pm-channel-header {
-    color: #6b6d76;
+    color: #14151c;
+    font-weight: 700;
     font-family: 'DM Mono', monospace;
     text-transform: uppercase;
-    font-size: 9px;
+    font-size: 10px;
     letter-spacing: .05em;
     padding: 0 0 14px 8px;
     align-self: end;
@@ -5646,6 +5658,7 @@ input:focus-visible {
 }
 
 .vucko-meta button,
+.vucko-meta a,
 .vucko-meta span {
     background: none;
     border: none;
@@ -5653,10 +5666,12 @@ input:focus-visible {
     font-size: 12px;
     color: var(--page-ink-muted);
     cursor: pointer;
+    text-decoration: none;
     transition: color 0.2s;
 }
 
-.vucko-meta button:hover {
+.vucko-meta button:hover,
+.vucko-meta a:hover {
     color: var(--page-ink);
 }
 

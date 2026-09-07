@@ -109,8 +109,9 @@ export function AuthModal({ mode, onClose, onSwitchMode }: AuthModalProps) {
             />
             <span className="auth-checkbox-box" aria-hidden="true" />
             <span>
-              I agree to the <a href="#terms">Terms of Service</a> and{' '}
-              <a href="#privacy">Privacy Policy</a>
+              I agree to the{' '}
+              <a href="/terms.html">Terms of Service</a> and{' '}
+              <a href="/privacy.html">Privacy Policy</a>
             </span>
           </label>
         )}
