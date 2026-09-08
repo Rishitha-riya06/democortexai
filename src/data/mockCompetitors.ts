@@ -99,7 +99,7 @@ export const mockSectionInsights: Record<string, string> = {
   website: 'AMD\'s estimated monthly traffic is 2.4x the target\'s, with a stronger US concentration.',
   seo: 'AMD\'s authority proxy of 52 is 86% higher than the target\'s 28.',
   video: 'Qualcomm leads with 11K subscribers — 9.2x the target\'s 1.2K, and uploads 5.5x more often.',
-  paid: 'AMD is the only competitor detected across all four paid channels.',
+  paid: 'AMD is the only competitor detected across all three paid channels.',
   cross: 'NVIDIA leads in website reach and YouTube, but trails in Instagram, LinkedIn, and SEO.',
 };
 

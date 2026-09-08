@@ -2802,7 +2802,7 @@ input:focus-visible {
 
 .paid-matrix {
     display: grid;
-    grid-template-columns: 110px repeat(4, 1fr);
+    grid-template-columns: 110px repeat(3, 1fr);
     gap: 0;
 }
 
@@ -3971,7 +3971,7 @@ input:focus-visible {
     }
 
     .paid-matrix {
-        grid-template-columns: 90px repeat(4, 1fr);
+        grid-template-columns: 90px repeat(3, 1fr);
     }
 
     .linkedin-matrix {
@@ -4142,7 +4142,7 @@ input:focus-visible {
     }
 
     .paid-matrix {
-        grid-template-columns: 74px repeat(4, 1fr);
+        grid-template-columns: 74px repeat(3, 1fr);
     }
 
     .linkedin-matrix {

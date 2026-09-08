@@ -21,7 +21,7 @@ export function PaidAdsAnalytics({
       id="paid-section"
       index="07"
       title="Paid Presence"
-      subtitle="Detected advertising activity across Meta, Google, LinkedIn, and video."
+      subtitle="Detected advertising activity across Meta, Google, and video."
       insight={insight}
     >
       <PaidMatrix
