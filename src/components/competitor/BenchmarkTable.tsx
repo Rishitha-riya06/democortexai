@@ -8,6 +8,8 @@ export interface BenchmarkTableProps {
   insight: string;
   companyLabels: Record<CompanyKey, string>;
   companyColors: Record<CompanyKey, string>;
+  title?: string;
+  subtitle?: string;
 }
 
 export function BenchmarkTable({
@@ -15,13 +17,15 @@ export function BenchmarkTable({
   insight,
   companyLabels,
   companyColors,
+  title = 'Competitive Snapshot',
+  subtitle = 'Relative digital presence across the major channels.',
 }: BenchmarkTableProps) {
   return (
     <SectionBlock
       id="snapshot-section"
       index="01"
-      title="Competitive Snapshot"
-      subtitle="Relative digital presence across the major channels."
+      title={title}
+      subtitle={subtitle}
       insight={insight}
     >
       <GroupedBarChart

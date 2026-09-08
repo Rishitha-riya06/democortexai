@@ -9,6 +9,8 @@ export interface InstagramPresenceProps {
   companyLabels: Record<CompanyKey, string>;
   companyColors: Record<CompanyKey, string>;
   metricLabel?: string;
+  title?: string;
+  subtitle?: string;
 }
 
 export function InstagramPresence({
@@ -17,13 +19,15 @@ export function InstagramPresence({
   companyLabels,
   companyColors,
   metricLabel = 'Followers',
+  title = 'Instagram Presence',
+  subtitle = 'Follower count and engagement rate, side by side.',
 }: InstagramPresenceProps) {
   return (
     <SectionBlock
       id="instagram-section"
       index="03"
-      title="Instagram Presence"
-      subtitle="Follower count and engagement rate, side by side."
+      title={title}
+      subtitle={subtitle}
       insight={insight}
     >
       <PrimaryChart

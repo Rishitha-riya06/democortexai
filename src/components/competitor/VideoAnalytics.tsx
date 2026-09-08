@@ -9,6 +9,8 @@ export interface VideoAnalyticsProps {
   companyLabels: Record<CompanyKey, string>;
   companyColors: Record<CompanyKey, string>;
   metricLabel?: string;
+  title?: string;
+  subtitle?: string;
 }
 
 export function VideoAnalytics({
@@ -17,13 +19,15 @@ export function VideoAnalytics({
   companyLabels,
   companyColors,
   metricLabel = 'Subscribers',
+  title = 'Video Presence',
+  subtitle = 'YouTube subscribers with views, upload frequency, and catalog size.',
 }: VideoAnalyticsProps) {
   return (
     <SectionBlock
       id="video-section"
       index="06"
-      title="Video Presence"
-      subtitle="YouTube subscribers with views, upload frequency, and catalog size."
+      title={title}
+      subtitle={subtitle}
       insight={insight}
     >
       <PrimaryChart

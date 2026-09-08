@@ -9,6 +9,8 @@ export interface LinkedInPresenceProps {
   companyLabels: Record<CompanyKey, string>;
   companyColors: Record<CompanyKey, string>;
   metricLabel?: string;
+  title?: string;
+  subtitle?: string;
 }
 
 export function LinkedInPresence({
@@ -17,13 +19,15 @@ export function LinkedInPresence({
   companyLabels,
   companyColors,
   metricLabel = 'Followers',
+  title = 'LinkedIn Presence',
+  subtitle = 'Follower count with growth, posting cadence, and hiring signals.',
 }: LinkedInPresenceProps) {
   return (
     <SectionBlock
       id="linkedin-section"
       index="02"
-      title="LinkedIn Presence"
-      subtitle="Follower count with growth, posting cadence, and hiring signals."
+      title={title}
+      subtitle={subtitle}
       insight={insight}
     >
       <PrimaryChart

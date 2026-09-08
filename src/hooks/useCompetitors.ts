@@ -12,33 +12,55 @@ import {
   mockWebsiteData,
 } from '../data/mockCompetitors';
 import { mockCompanyColors, mockCompanyLabels } from '../data/mockCompanies';
+import {
+  kiddikindCompanyColors,
+  kiddikindCompanyLabels,
+  kiddikindCrossPlatformData,
+  kiddikindGapInsights,
+  kiddikindInstagramData,
+  kiddikindLinkedInData,
+  kiddikindPaidMatrix,
+  kiddikindSectionInsights,
+  kiddikindSeoData,
+  kiddikindSnapshotData,
+  kiddikindVideoData,
+  kiddikindWebsiteData,
+} from '../data/kiddikind';
 
-export function useCompetitors() {
-  const snapshotData = useMemo(() => mockSnapshotData, []);
-  const instagramData = useMemo(() => mockInstagramData, []);
-  const linkedInData = useMemo(() => mockLinkedInData, []);
-  const websiteData = useMemo(() => mockWebsiteData, []);
-  const seoData = useMemo(() => mockSeoData, []);
-  const videoData = useMemo(() => mockVideoData, []);
-  const paidMatrix = useMemo(() => mockPaidMatrix, []);
-  const crossPlatformData = useMemo(() => mockCrossPlatformData, []);
-  const sectionInsights = useMemo(() => mockSectionInsights, []);
-  const gapInsights = useMemo(() => mockDefaultGapInsights, []);
-  const companyLabels = useMemo(() => mockCompanyLabels, []);
-  const companyColors = useMemo(() => mockCompanyColors, []);
+export function useCompetitors(company?: string) {
+  const isKiddikind = company === 'Kiddikind';
 
-  return {
-    snapshotData,
-    instagramData,
-    linkedInData,
-    websiteData,
-    seoData,
-    videoData,
-    paidMatrix,
-    crossPlatformData,
-    sectionInsights,
-    gapInsights,
-    companyLabels,
-    companyColors,
-  };
+  return useMemo(() => {
+    if (isKiddikind) {
+      return {
+        snapshotData: kiddikindSnapshotData,
+        instagramData: kiddikindInstagramData,
+        linkedInData: kiddikindLinkedInData,
+        websiteData: kiddikindWebsiteData,
+        seoData: kiddikindSeoData,
+        videoData: kiddikindVideoData,
+        paidMatrix: kiddikindPaidMatrix,
+        crossPlatformData: kiddikindCrossPlatformData,
+        sectionInsights: kiddikindSectionInsights,
+        gapInsights: kiddikindGapInsights,
+        companyLabels: kiddikindCompanyLabels,
+        companyColors: kiddikindCompanyColors,
+      };
+    }
+
+    return {
+      snapshotData: mockSnapshotData,
+      instagramData: mockInstagramData,
+      linkedInData: mockLinkedInData,
+      websiteData: mockWebsiteData,
+      seoData: mockSeoData,
+      videoData: mockVideoData,
+      paidMatrix: mockPaidMatrix,
+      crossPlatformData: mockCrossPlatformData,
+      sectionInsights: mockSectionInsights,
+      gapInsights: mockDefaultGapInsights,
+      companyLabels: mockCompanyLabels,
+      companyColors: mockCompanyColors,
+    };
+  }, [isKiddikind]);
 }

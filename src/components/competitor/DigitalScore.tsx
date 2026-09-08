@@ -12,6 +12,8 @@ export interface DigitalScoreProps {
   companyColors: Record<CompanyKey, string>;
   seriesData?: Record<CompanyKey, number[]>;
   months?: string[];
+  trendAvailable?: boolean;
+  trendUnavailableNote?: string;
 }
 
 export function DigitalScore({
@@ -21,6 +23,8 @@ export function DigitalScore({
   companyColors,
   seriesData,
   months,
+  trendAvailable = true,
+  trendUnavailableNote = 'Trend data not found — this run captured a single point in time.',
 }: DigitalScoreProps) {
   const linkedinRow = snapshotData.find((d) => d.category === 'LinkedIn');
   const instagramRow = snapshotData.find((d) => d.category === 'Instagram');
@@ -31,9 +35,11 @@ export function DigitalScore({
     const targetItem = group.rows.find((r) => r.key === 'target');
     const sorted = [...group.rows].sort((a, b) => b.pct - a.pct);
     const rank = sorted.findIndex((r) => r.key === 'target') + 1;
+    const val = targetItem?.raw ?? '—';
+    const resolved = Boolean(targetItem) && val !== 'Not found';
     return {
-      val: targetItem?.raw ?? '—',
-      rankStr: `Rank #${rank} / ${group.rows.length}`,
+      val,
+      rankStr: resolved ? `Rank #${rank} / ${group.rows.length}` : 'Not ranked',
       rankNum: rank,
     };
   };
@@ -72,12 +78,19 @@ export function DigitalScore({
             </div>
           </div>
 
-          <BentoLineChart
-            seriesData={seriesData}
-            months={months}
-            companyLabels={companyLabels}
-            companyColors={companyColors}
-          />
+          {trendAvailable ? (
+            <BentoLineChart
+              seriesData={seriesData}
+              months={months}
+              companyLabels={companyLabels}
+              companyColors={companyColors}
+            />
+          ) : (
+            <div className="bento-trend-empty">
+              <span className="bento-trend-empty-mark" />
+              <p>{trendUnavailableNote}</p>
+            </div>
+          )}
 
           <div className="bento-chart-legend">
             {(Object.keys(companyLabels) as CompanyKey[]).map((key) => (
@@ -113,7 +126,9 @@ export function DigitalScore({
                 <span className="platform-name">LinkedIn</span>
                 <div className="metric-value-row">
                   <span className="metric-value">{linkedinInfo.val}</span>
-                  <span className="metric-unit">Followers</span>
+                  {linkedinInfo.val !== 'Not found' && (
+                    <span className="metric-unit">Followers</span>
+                  )}
                 </div>
               </div>
               <div className="bento-card-footer">
@@ -142,7 +157,9 @@ export function DigitalScore({
                 <span className="platform-name">Instagram</span>
                 <div className="metric-value-row">
                   <span className="metric-value">{instagramInfo.val}</span>
-                  <span className="metric-unit">Followers</span>
+                  {instagramInfo.val !== 'Not found' && (
+                    <span className="metric-unit">Followers</span>
+                  )}
                 </div>
               </div>
               <div className="bento-card-footer">
@@ -172,7 +189,9 @@ export function DigitalScore({
               <span className="platform-name">YouTube</span>
               <div className="metric-value-row">
                 <span className="metric-value">{youtubeInfo.val}</span>
-                <span className="metric-unit">Subscribers</span>
+                {youtubeInfo.val !== 'Not found' && (
+                  <span className="metric-unit">Subscribers</span>
+                )}
               </div>
             </div>
             <div className="bento-card-footer">
