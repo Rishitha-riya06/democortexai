@@ -16,11 +16,11 @@ import { mockCompanyColors, mockCompanyLabels } from '../data/mockCompanies';
 export function useCompetitors() {
   const snapshotData = useMemo(() => mockSnapshotData, []);
   const instagramData = useMemo(() => mockInstagramData, []);
+  const linkedInData = useMemo(() => mockLinkedInData, []);
   const websiteData = useMemo(() => mockWebsiteData, []);
   const seoData = useMemo(() => mockSeoData, []);
   const videoData = useMemo(() => mockVideoData, []);
   const paidMatrix = useMemo(() => mockPaidMatrix, []);
-  const linkedInData = useMemo(() => mockLinkedInData, []);
   const crossPlatformData = useMemo(() => mockCrossPlatformData, []);
   const sectionInsights = useMemo(() => mockSectionInsights, []);
   const gapInsights = useMemo(() => mockDefaultGapInsights, []);
@@ -30,11 +30,11 @@ export function useCompetitors() {
   return {
     snapshotData,
     instagramData,
+    linkedInData,
     websiteData,
     seoData,
     videoData,
     paidMatrix,
-    linkedInData,
     crossPlatformData,
     sectionInsights,
     gapInsights,

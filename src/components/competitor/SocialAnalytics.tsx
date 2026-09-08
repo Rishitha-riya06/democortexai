@@ -21,7 +21,7 @@ export function InstagramPresence({
   return (
     <SectionBlock
       id="instagram-section"
-      index="02"
+      index="03"
       title="Instagram Presence"
       subtitle="Follower count and engagement rate, side by side."
       insight={insight}

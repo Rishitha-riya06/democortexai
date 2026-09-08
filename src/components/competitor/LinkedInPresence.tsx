@@ -3,7 +3,7 @@ import { SeriesRow } from '../../types/competitor';
 import { SectionBlock } from './SectionBlock';
 import { PrimaryChart } from './charts/PrimaryChart';
 
-export interface VideoAnalyticsProps {
+export interface LinkedInPresenceProps {
   data: SeriesRow[];
   insight: string;
   companyLabels: Record<CompanyKey, string>;
@@ -11,19 +11,19 @@ export interface VideoAnalyticsProps {
   metricLabel?: string;
 }
 
-export function VideoAnalytics({
+export function LinkedInPresence({
   data,
   insight,
   companyLabels,
   companyColors,
-  metricLabel = 'Subscribers',
-}: VideoAnalyticsProps) {
+  metricLabel = 'Followers',
+}: LinkedInPresenceProps) {
   return (
     <SectionBlock
-      id="video-section"
-      index="06"
-      title="Video Presence"
-      subtitle="YouTube subscribers with views, upload frequency, and catalog size."
+      id="linkedin-section"
+      index="02"
+      title="LinkedIn Presence"
+      subtitle="Follower count with growth, posting cadence, and hiring signals."
       insight={insight}
     >
       <PrimaryChart
@@ -35,6 +35,3 @@ export function VideoAnalytics({
     </SectionBlock>
   );
 }
-
-export const VideoPresence = VideoAnalytics;
-export type VideoPresenceProps = VideoAnalyticsProps;

@@ -11,7 +11,7 @@ import {
   mockWebsiteData,
 } from '../data/mockCompetitors';
 import { mockCompanyColors, mockCompanyLabels } from '../data/mockCompanies';
-import { GapInsightItem, LinkedInRow, PaidMatrixRow, SeriesRow, SnapshotCategory } from '../types/competitor';
+import { GapInsightItem, PaidMatrixRow, SeriesRow, SnapshotCategory } from '../types/competitor';
 import { CompanyKey } from '../types/company';
 
 export const competitorService = {
@@ -21,6 +21,10 @@ export const competitorService = {
 
   getInstagramData(): SeriesRow[] {
     return mockInstagramData;
+  },
+
+  getLinkedInData(): SeriesRow[] {
+    return mockLinkedInData;
   },
 
   getWebsiteData(): SeriesRow[] {
@@ -37,10 +41,6 @@ export const competitorService = {
 
   getPaidMatrix(): PaidMatrixRow[] {
     return mockPaidMatrix;
-  },
-
-  getLinkedInData(): LinkedInRow[] {
-    return mockLinkedInData;
   },
 
   getCrossPlatformData(): SnapshotCategory[] {

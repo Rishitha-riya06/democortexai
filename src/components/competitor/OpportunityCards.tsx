@@ -19,7 +19,7 @@ export function OpportunityCards({
   return (
     <SectionBlock
       id="cross-section"
-      index="07"
+      index="08"
       title="Digital Presence Across Channels"
       subtitle="The full competitive picture in one view."
       insight={insight}

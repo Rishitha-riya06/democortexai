@@ -2802,7 +2802,7 @@ input:focus-visible {
 
 .paid-matrix {
     display: grid;
-    grid-template-columns: 110px repeat(3, 1fr);
+    grid-template-columns: 110px repeat(4, 1fr);
     gap: 0;
 }
 
@@ -3804,6 +3804,16 @@ input:focus-visible {
     border-color: rgba(204, 0, 0, 0.3);
 }
 
+.linkedin-card {
+    background: linear-gradient(135deg, #0a66c2 0%, #0959a8 45%, #08447e 65%, #061a2e 100%);
+    border-color: rgba(10, 102, 194, 0.2);
+}
+
+.linkedin-card:hover {
+    background: linear-gradient(135deg, #1272d1 0%, #0b62b3 45%, #0a4c8a 65%, #081f36 100%);
+    border-color: rgba(10, 102, 194, 0.3);
+}
+
 .rank-tag {
     font-family: 'DM Mono', monospace;
     font-size: 9px;
@@ -3961,7 +3971,7 @@ input:focus-visible {
     }
 
     .paid-matrix {
-        grid-template-columns: 90px repeat(3, 1fr);
+        grid-template-columns: 90px repeat(4, 1fr);
     }
 
     .linkedin-matrix {
@@ -3983,6 +3993,7 @@ input:focus-visible {
     .bento-grid {
         grid-template-columns: 1fr;
     }
+
 }
 
 @media (max-width: 600px) {
@@ -4131,7 +4142,7 @@ input:focus-visible {
     }
 
     .paid-matrix {
-        grid-template-columns: 74px repeat(3, 1fr);
+        grid-template-columns: 74px repeat(4, 1fr);
     }
 
     .linkedin-matrix {

@@ -25,12 +25,8 @@ export interface PaidMatrixRow {
   key: CompanyKey;
   meta: PaidStatus;
   google: PaidStatus;
+  linkedin: PaidStatus;
   video: PaidStatus;
-}
-
-export interface LinkedInRow {
-  key: CompanyKey;
-  status: PaidStatus;
 }
 
 export interface GapInsightItem {

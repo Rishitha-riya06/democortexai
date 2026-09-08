@@ -5,6 +5,7 @@ import { CompetitorHeader } from '../components/competitor/CompetitorHeader';
 import { CompetitorSelector } from '../components/competitor/CompetitorSelector';
 import { DigitalScore } from '../components/competitor/DigitalScore';
 import { BenchmarkTable } from '../components/competitor/BenchmarkTable';
+import { LinkedInPresence } from '../components/competitor/LinkedInPresence';
 import { SocialAnalytics } from '../components/competitor/SocialAnalytics';
 import { WebsiteAnalytics } from '../components/competitor/WebsiteAnalytics';
 import { SEOAnalytics } from '../components/competitor/SEOAnalytics';
@@ -23,11 +24,11 @@ export function CompetitorAnalytics({ company, onBack }: CompetitorAnalyticsProp
   const {
     snapshotData,
     instagramData,
+    linkedInData,
     websiteData,
     seoData,
     videoData,
     paidMatrix,
-    linkedInData,
     crossPlatformData,
     sectionInsights,
     gapInsights,
@@ -63,6 +64,13 @@ export function CompetitorAnalytics({ company, onBack }: CompetitorAnalyticsProp
         companyColors={companyColors}
       />
 
+      <LinkedInPresence
+        data={linkedInData}
+        insight={sectionInsights.linkedin}
+        companyLabels={companyLabels}
+        companyColors={companyColors}
+      />
+
       <SocialAnalytics
         instagramData={instagramData}
         instagramInsight={sectionInsights.instagram}
@@ -93,7 +101,6 @@ export function CompetitorAnalytics({ company, onBack }: CompetitorAnalyticsProp
 
       <PaidAdsAnalytics
         matrix={paidMatrix}
-        linkedInData={linkedInData}
         insight={sectionInsights.paid}
         companyLabels={companyLabels}
         companyColors={companyColors}
