@@ -14,7 +14,6 @@ import { PaidAdsAnalytics } from '../components/competitor/PaidAdsAnalytics';
 import { OpportunityCards } from '../components/competitor/OpportunityCards';
 import { GapAnalysis } from '../components/competitor/GapAnalysis';
 import { DataTransparency } from '../components/competitor/DataTransparency';
-import { kiddikindCoverageNote } from '../data/kiddikind';
 
 export interface CompetitorAnalyticsProps {
   company: Company;
@@ -22,8 +21,6 @@ export interface CompetitorAnalyticsProps {
 }
 
 export function CompetitorAnalytics({ company, onBack }: CompetitorAnalyticsProps) {
-  const isKiddikind = company === 'Kiddikind';
-
   const {
     snapshotData,
     instagramData,
@@ -37,7 +34,7 @@ export function CompetitorAnalytics({ company, onBack }: CompetitorAnalyticsProp
     gapInsights,
     companyLabels,
     companyColors,
-  } = useCompetitors(company);
+  } = useCompetitors();
 
   return (
     <motion.main
@@ -58,8 +55,6 @@ export function CompetitorAnalytics({ company, onBack }: CompetitorAnalyticsProp
         snapshotData={snapshotData}
         companyLabels={companyLabels}
         companyColors={companyColors}
-        trendAvailable={!isKiddikind}
-        trendUnavailableNote="Trend data not found — this run captured a single point in time, so there is no month-over-month series to plot."
       />
 
       <BenchmarkTable
@@ -67,7 +62,6 @@ export function CompetitorAnalytics({ company, onBack }: CompetitorAnalyticsProp
         insight={sectionInsights.snapshot}
         companyLabels={companyLabels}
         companyColors={companyColors}
-        subtitle={isKiddikind ? kiddikindCoverageNote : undefined}
       />
 
       <LinkedInPresence
@@ -75,11 +69,6 @@ export function CompetitorAnalytics({ company, onBack }: CompetitorAnalyticsProp
         insight={sectionInsights.linkedin}
         companyLabels={companyLabels}
         companyColors={companyColors}
-        subtitle={
-          isKiddikind
-            ? 'Company page followers, where a page could be resolved.'
-            : undefined
-        }
       />
 
       <SocialAnalytics
@@ -87,11 +76,6 @@ export function CompetitorAnalytics({ company, onBack }: CompetitorAnalyticsProp
         instagramInsight={sectionInsights.instagram}
         companyLabels={companyLabels}
         companyColors={companyColors}
-        subtitle={
-          isKiddikind
-            ? 'Follower count with engagement rate, posting cadence, and Reels share.'
-            : undefined
-        }
       />
 
       <WebsiteAnalytics
@@ -99,13 +83,6 @@ export function CompetitorAnalytics({ company, onBack }: CompetitorAnalyticsProp
         insight={sectionInsights.website}
         companyLabels={companyLabels}
         companyColors={companyColors}
-        metricLabel={isKiddikind ? 'Linking root domains' : undefined}
-        title={isKiddikind ? 'Website & Technical Health' : undefined}
-        subtitle={
-          isKiddikind
-            ? 'Linking root domains with Lighthouse SEO, performance, and index coverage.'
-            : undefined
-        }
       />
 
       <SEOAnalytics
@@ -113,12 +90,6 @@ export function CompetitorAnalytics({ company, onBack }: CompetitorAnalyticsProp
         insight={sectionInsights.seo}
         companyLabels={companyLabels}
         companyColors={companyColors}
-        metricLabel={isKiddikind ? 'Ranking keywords' : undefined}
-        subtitle={
-          isKiddikind
-            ? 'Ranking keywords with backlink profile and spam score, via Moz.'
-            : undefined
-        }
       />
 
       <VideoAnalytics
@@ -126,11 +97,6 @@ export function CompetitorAnalytics({ company, onBack }: CompetitorAnalyticsProp
         insight={sectionInsights.video}
         companyLabels={companyLabels}
         companyColors={companyColors}
-        subtitle={
-          isKiddikind
-            ? 'YouTube subscribers, where a channel could be resolved.'
-            : undefined
-        }
       />
 
       <PaidAdsAnalytics
@@ -138,11 +104,6 @@ export function CompetitorAnalytics({ company, onBack }: CompetitorAnalyticsProp
         insight={sectionInsights.paid}
         companyLabels={companyLabels}
         companyColors={companyColors}
-        subtitle={
-          isKiddikind
-            ? 'Detected advertising activity across Meta, Google, and video — AI-Overview inference, not an Ad Library lookup.'
-            : undefined
-        }
       />
 
       <OpportunityCards
@@ -153,12 +114,7 @@ export function CompetitorAnalytics({ company, onBack }: CompetitorAnalyticsProp
       />
 
       <GapAnalysis insights={gapInsights} />
-
-      <DataTransparency
-        sourcesCount={isKiddikind ? '5 agents · 3 of 5 complete' : undefined}
-        confidence={isKiddikind ? 'Sourced — no estimates' : undefined}
-        updatedText={isKiddikind ? 'Generated 2026-09-08, 07:50 UTC' : undefined}
-      />
+      <DataTransparency />
     </motion.main>
   );
 }

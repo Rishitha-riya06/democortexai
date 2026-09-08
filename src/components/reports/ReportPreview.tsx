@@ -7,7 +7,6 @@ import {
   ReferenceNumberedList,
 } from '../analysis/IntelligenceCard';
 import { ReportSection } from './ReportSection';
-import { KiddikindReport } from './KiddikindReport';
 
 export interface ReportPreviewProps {
   company: Company;
@@ -15,10 +14,6 @@ export interface ReportPreviewProps {
 }
 
 export function ReportPreview({ company, onShare }: ReportPreviewProps) {
-  if (company === 'Kiddikind') {
-    return <KiddikindReport onShare={onShare} />;
-  }
-
   const isOpenAI = company === 'OpenAI';
   const displayCompany = isOpenAI ? 'OpenAI' : company;
 

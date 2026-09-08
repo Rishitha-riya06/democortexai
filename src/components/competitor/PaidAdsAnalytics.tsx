@@ -8,8 +8,6 @@ export interface PaidAdsAnalyticsProps {
   insight: string;
   companyLabels: Record<CompanyKey, string>;
   companyColors: Record<CompanyKey, string>;
-  title?: string;
-  subtitle?: string;
 }
 
 export function PaidAdsAnalytics({
@@ -17,15 +15,13 @@ export function PaidAdsAnalytics({
   insight,
   companyLabels,
   companyColors,
-  title = 'Paid Presence',
-  subtitle = 'Detected advertising activity across Meta, Google, and video.',
 }: PaidAdsAnalyticsProps) {
   return (
     <SectionBlock
       id="paid-section"
       index="07"
-      title={title}
-      subtitle={subtitle}
+      title="Paid Presence"
+      subtitle="Detected advertising activity across Meta, Google, and video."
       insight={insight}
     >
       <PaidMatrix

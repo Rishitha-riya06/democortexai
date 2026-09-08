@@ -9,8 +9,6 @@ export interface SEOAnalyticsProps {
   companyLabels: Record<CompanyKey, string>;
   companyColors: Record<CompanyKey, string>;
   metricLabel?: string;
-  title?: string;
-  subtitle?: string;
 }
 
 export function SEOAnalytics({
@@ -19,15 +17,13 @@ export function SEOAnalytics({
   companyLabels,
   companyColors,
   metricLabel = 'Authority proxy',
-  title = 'Search Presence',
-  subtitle = 'Authority proxy with backlinks, indexed pages, and speed.',
 }: SEOAnalyticsProps) {
   return (
     <SectionBlock
       id="seo-section"
       index="05"
-      title={title}
-      subtitle={subtitle}
+      title="Search Presence"
+      subtitle="Authority proxy with backlinks, indexed pages, and speed."
       insight={insight}
     >
       <PrimaryChart

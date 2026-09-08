@@ -8,8 +8,6 @@ export interface OpportunityCardsProps {
   insight: string;
   companyLabels: Record<CompanyKey, string>;
   companyColors: Record<CompanyKey, string>;
-  title?: string;
-  subtitle?: string;
 }
 
 export function OpportunityCards({
@@ -17,15 +15,13 @@ export function OpportunityCards({
   insight,
   companyLabels,
   companyColors,
-  title = 'Digital Presence Across Channels',
-  subtitle = 'The full competitive picture in one view.',
 }: OpportunityCardsProps) {
   return (
     <SectionBlock
       id="cross-section"
       index="08"
-      title={title}
-      subtitle={subtitle}
+      title="Digital Presence Across Channels"
+      subtitle="The full competitive picture in one view."
       insight={insight}
       hero
     >

@@ -9,8 +9,6 @@ export interface WebsiteAnalyticsProps {
   companyLabels: Record<CompanyKey, string>;
   companyColors: Record<CompanyKey, string>;
   metricLabel?: string;
-  title?: string;
-  subtitle?: string;
 }
 
 export function WebsiteAnalytics({
@@ -19,15 +17,13 @@ export function WebsiteAnalytics({
   companyLabels,
   companyColors,
   metricLabel = 'Monthly visits',
-  title = 'Website Reach',
-  subtitle = 'Estimated monthly traffic with source and regional signals.',
 }: WebsiteAnalyticsProps) {
   return (
     <SectionBlock
       id="website-section"
       index="04"
-      title={title}
-      subtitle={subtitle}
+      title="Website Reach"
+      subtitle="Estimated monthly traffic with source and regional signals."
       insight={insight}
     >
       <PrimaryChart

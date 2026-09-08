@@ -2,20 +2,6 @@ import { CompanyKey, HistoryItem } from '../types/company';
 
 export const mockHistory: HistoryItem[] = [
   {
-    name: 'Kiddikind',
-    monogram: 'K',
-    industry: 'Children’s nutrition',
-    time: 'Just now',
-    preview: 'India’s first gut-first, doctor-created millet nutrition brand, sold D2C.',
-    color: '#7c9a3f',
-    bgGradient: 'linear-gradient(135deg, #bcdc6f 0%, #7c9a3f 50%, #3b5215 100%)',
-    textColor: '#ffffff',
-    accentColor: '#ffffff',
-    avatarBg: 'rgba(255, 255, 255, 0.24)',
-    avatarColor: '#ffffff',
-    borderColor: 'rgba(255, 255, 255, 0.22)',
-  },
-  {
     name: 'OpenAI',
     monogram: 'O',
     industry: 'Artificial intelligence',
@@ -73,7 +59,7 @@ export const mockHistory: HistoryItem[] = [
   },
 ];
 
-export const mockExampleCompanies = ['Kiddikind', 'OpenAI', 'Microsoft', 'Salesforce'];
+export const mockExampleCompanies = ['OpenAI', 'Microsoft', 'Salesforce', 'Zoho'];
 
 export const mockCompanyColors: Record<CompanyKey, string> = {
   target: '#7c5cff',
